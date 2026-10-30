@@ -3,6 +3,12 @@
 > 
 > *A Computer Engineering Discrete Mathematics (Unit 2: Logic & Propositions) Interactive Simulation System.*
 
+[![Live Website](https://img.shields.io/badge/Live_Website-ICU_GUARD-00f2fe?style=for-the-badge&logo=google-chrome&logoColor=black)](https://ogdaddy981.github.io/icu-guard/)
+[![GitHub Repository](https://img.shields.io/badge/GitHub_Repo-OgDaDDy981%2Ficu--guard-030712?style=for-the-badge&logo=github)](https://github.com/OgDaDDy981/icu-guard)
+[![Discrete Mathematics](https://img.shields.io/badge/Academic-Unit_2_Propositional_Logic-00d2be?style=for-the-badge&logo=academia)](https://ogdaddy981.github.io/icu-guard/#math-laboratory)
+
+🌐 **Live Demo URL:** [https://ogdaddy981.github.io/icu-guard/](https://ogdaddy981.github.io/icu-guard/)
+
 ---
 
 ## 🎯 Executive Overview
