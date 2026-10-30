@@ -77,7 +77,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenPresentation, onRevealMath
               onClick={onRevealMath}
               className="w-full p-2 rounded-xl bg-blue-950/40 border border-blue-500/40 text-blue-300 hover:bg-blue-900/40 flex items-center justify-between text-left transition-all font-bold cursor-pointer"
             >
-              <span>Reveal the Math Behind</span>
+              <span>SOLVE THE MATH</span>
               <Zap className="w-3.5 h-3.5 fill-blue-300" />
             </button>
           </div>

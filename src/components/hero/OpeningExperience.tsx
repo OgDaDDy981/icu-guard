@@ -101,10 +101,10 @@ export const OpeningExperience: React.FC<OpeningExperienceProps> = ({
 
           <button
             onClick={onRevealMath}
-            className="px-5 py-3.5 rounded-xl font-mono font-bold text-xs sm:text-sm tracking-wider uppercase transition-all bg-slate-900 border border-slate-700 text-slate-200 hover:text-white hover:border-blue-500/50 flex items-center gap-2 cursor-pointer shadow-md"
+            className="px-5 py-3.5 rounded-xl font-mono font-bold text-xs sm:text-sm tracking-wider uppercase transition-all bg-gradient-to-r from-blue-900/60 to-indigo-900/60 border border-blue-500/50 text-white hover:border-blue-400 hover:scale-[1.02] flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-900/40"
           >
-            <Zap className="w-4 h-4 text-blue-400 fill-blue-400" />
-            <span>REVEAL THE MATH BEHIND</span>
+            <Zap className="w-4 h-4 text-blue-300 fill-blue-300" />
+            <span>SOLVE THE MATH</span>
           </button>
 
           <button

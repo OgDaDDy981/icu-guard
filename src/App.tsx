@@ -15,8 +15,7 @@ import { PatientMonitor } from './components/telemetry/PatientMonitor';
 import { AlarmSystemPanel } from './components/telemetry/AlarmSystemPanel';
 import { LogicEngine } from './components/logic/LogicEngine';
 import { ScenarioPlayer } from './components/scenarios/ScenarioPlayer';
-import { MathLaboratory } from './components/lab/MathLaboratory';
-import { RevealMathModal } from './components/math/RevealMathModal';
+import { SolveTheMathModal } from './components/math/SolveTheMathModal';
 import { PresentationMode } from './components/presentation/PresentationMode';
 import { Footer } from './components/common/Footer';
 
@@ -243,7 +242,7 @@ export function App() {
               className="px-3 py-1 rounded-lg bg-white/20 hover:bg-white/30 border border-white/40 text-white text-[11px] font-bold flex items-center gap-1.5 transition-all cursor-pointer"
             >
               <Zap className="w-3.5 h-3.5 fill-white" />
-              REVEAL THE MATH
+              SOLVE THE MATH
             </button>
 
             <button
@@ -315,17 +314,15 @@ export function App() {
           systemStatus={systemStatus}
           onRevealMath={() => setIsMathTheaterOpen(true)}
         />
-
-        {/* Section 6: The Mathematics Laboratory */}
-        <MathLaboratory />
       </main>
 
-      {/* Reveal the Math Behind Modal */}
-      <RevealMathModal
+      {/* SOLVE THE MATH: Dedicated Full-Featured Simulation Laboratory */}
+      <SolveTheMathModal
         isOpen={isMathTheaterOpen}
         onClose={() => setIsMathTheaterOpen(false)}
         vitals={vitals}
         propositions={propositions}
+        sensors={sensors}
       />
 
       {/* Product Demonstration Mode Modal */}

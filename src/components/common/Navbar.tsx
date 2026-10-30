@@ -101,13 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             PATIENT MONITOR
           </a>
           <a href="#logic-engine" className="hover:text-blue-300 transition-colors py-1">
-            LOGIC ENGINE
+            SAFETY RELAY
           </a>
           <a href="#scenarios" className="hover:text-blue-300 transition-colors py-1">
             SCENARIOS
-          </a>
-          <a href="#math-laboratory" className="hover:text-blue-300 transition-colors py-1">
-            MATH LABORATORY
           </a>
           <a href="#alarms" className="hover:text-blue-300 transition-colors py-1 flex items-center gap-1.5">
             <Bell className="w-3.5 h-3.5" />
@@ -118,6 +115,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               </span>
             )}
           </a>
+          <button
+            onClick={onRevealMath}
+            className="text-blue-400 hover:text-blue-300 font-bold transition-colors py-1 flex items-center gap-1 cursor-pointer"
+          >
+            <Zap className="w-3 h-3 fill-blue-400" />
+            <span>SOLVE THE MATH</span>
+          </button>
         </nav>
 
         {/* Right Action Tools */}
@@ -147,11 +151,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Signature Feature Button */}
           <button
             onClick={onRevealMath}
-            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-md shadow-blue-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-md shadow-blue-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
           >
             <Zap className="w-3.5 h-3.5 fill-white" />
-            <span className="hidden md:inline">REVEAL THE MATH BEHIND</span>
-            <span className="md:hidden">REVEAL MATH</span>
+            <span className="hidden md:inline">SOLVE THE MATH</span>
+            <span className="md:hidden">SOLVE MATH</span>
           </button>
 
           {/* Mobile Menu Toggle */}
@@ -182,7 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 text-slate-300 hover:text-blue-300"
           >
-            LOGIC ENGINE
+            SAFETY RELAY
           </a>
           <a
             href="#scenarios"
@@ -191,13 +195,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             SCENARIOS
           </a>
-          <a
-            href="#math-laboratory"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-300 hover:text-blue-300"
+          <button
+            onClick={() => {
+              setMobileMenuOpen(false);
+              onRevealMath();
+            }}
+            className="w-full text-left py-2 text-blue-400 font-bold flex items-center gap-2 cursor-pointer"
           >
-            MATH LABORATORY
-          </a>
+            <Zap className="w-4 h-4 fill-blue-400" />
+            <span>SOLVE THE MATH (LABORATORY)</span>
+          </button>
           <a
             href="#alarms"
             onClick={() => setMobileMenuOpen(false)}

@@ -250,10 +250,10 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
 
         <button
           onClick={onRevealMath}
-          className="px-4 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 hover:scale-[1.02] cursor-pointer"
+          className="px-4 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-[1.02] cursor-pointer"
         >
           <Zap className="w-4 h-4 fill-white" />
-          REVEAL THE MATH BEHIND
+          SOLVE THE MATH
         </button>
       </div>
 
@@ -520,9 +520,10 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
           <span>Continuous data piped live into Patient Telemetry & Logic Engine above.</span>
           <button
             onClick={onRevealMath}
-            className="text-blue-400 font-bold hover:underline flex items-center gap-1 self-start sm:self-auto"
+            className="text-blue-400 font-bold hover:underline flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
           >
-            Launch Mathematical Theater for this Scenario
+            <Zap className="w-3.5 h-3.5 fill-blue-400" />
+            Launch Solve the Math Laboratory for this Scenario
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

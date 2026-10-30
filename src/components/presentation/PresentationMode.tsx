@@ -316,7 +316,7 @@ export const PresentationMode: React.FC<PresentationModeProps> = ({
                     className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-blue-300 font-mono font-bold text-xs flex items-center gap-1.5 hover:text-white hover:border-slate-600 cursor-pointer"
                   >
                     <Zap className="w-3.5 h-3.5 fill-blue-300" />
-                    <span>REVEAL MATH</span>
+                    <span>SOLVE THE MATH</span>
                   </button>
                 )}
 
