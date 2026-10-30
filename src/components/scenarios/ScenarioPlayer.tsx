@@ -1,23 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { ScenarioDefinition, VitalsState, SystemStatus, SensorChannelsState, AlarmEvent } from '../../types';
-import { PRESET_SCENARIOS, DEFAULT_VITALS, DEFAULT_SENSORS } from '../../utils/constants';
+import { PRESET_SCENARIOS, DEFAULT_VITALS } from '../../utils/constants';
+import { evaluatePropositions } from '../../utils/logic';
 import { soundEngine } from '../../utils/audio';
+import { WaveformCanvas } from '../telemetry/WaveformCanvas';
 import { 
   Play, 
   Pause, 
   RotateCcw, 
-  ChevronLeft, 
-  ChevronRight, 
-  CheckCircle2, 
-  AlertOctagon, 
   ShieldCheck, 
+  AlertTriangle, 
+  AlertOctagon, 
   Activity, 
-  Flame, 
-  Radio, 
+  Heart, 
   Zap, 
   ArrowRight,
-  Clock,
-  FastForward
+  Volume2,
+  VolumeX,
+  Wrench,
+  CheckCircle2,
+  Sparkles,
+  Radio,
+  Cpu
 } from 'lucide-react';
 
 interface ScenarioPlayerProps {
@@ -31,12 +35,40 @@ interface ScenarioPlayerProps {
 export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
   onApplyVitals,
   onEmitAlarm,
+  currentVitals,
+  systemStatus: _systemStatus,
   onRevealMath,
 }) => {
-  const [selectedScenario, setSelectedScenario] = useState<ScenarioDefinition>(PRESET_SCENARIOS[3]); // Default to Combined Emergency
+  // Primary selection: 'normal' | 'warning' | 'emergency' | 'sensor_fault' | 'recovery'
+  const [activeExperience, setActiveExperience] = useState<'normal' | 'warning' | 'emergency' | 'sensor_fault' | 'recovery'>('emergency');
+  
+  // For 'warning' experience: allow user to test either Hypoxia or Tachycardia
+  const [warningVariant, setWarningVariant] = useState<'hypoxia' | 'tachycardia'>('hypoxia');
+
+  // Map experience to underlying scenario definition
+  const getActiveScenarioDefinition = (): ScenarioDefinition => {
+    switch (activeExperience) {
+      case 'normal':
+        return PRESET_SCENARIOS[0]; // Normal Patient Monitoring
+      case 'warning':
+        return warningVariant === 'hypoxia' ? PRESET_SCENARIOS[1] : PRESET_SCENARIOS[2];
+      case 'emergency':
+        return PRESET_SCENARIOS[3]; // Combined Critical Emergency
+      case 'sensor_fault':
+        return PRESET_SCENARIOS[4]; // Sensor Fault Disconnection
+      case 'recovery':
+        return PRESET_SCENARIOS[5]; // Progressive Recovery
+      default:
+        return PRESET_SCENARIOS[3];
+    }
+  };
+
+  const selectedScenario = getActiveScenarioDefinition();
+
+  // Simulation execution state
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentTimeSec, setCurrentTimeSec] = useState<number>(0);
-  const [playbackSpeed, setPlaybackSpeed] = useState<number>(1); // 1x, 2x
+  const [soundMuted, setSoundMuted] = useState<boolean>(soundEngine.getMuted());
 
   const lastKeyframeIndexRef = useRef<number>(-1);
   const tickerRef = useRef<number | null>(null);
@@ -46,12 +78,11 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
   // Linear interpolation utility
   const lerp = (start: number, end: number, t: number) => start + (end - start) * Math.max(0, Math.min(1, t));
 
-  // Compute interpolated vitals at exact timestamp
+  // Compute interpolated vitals at time t
   const computeStateAtTime = (t: number) => {
     const keyframes = selectedScenario.keyframes;
     if (!keyframes || keyframes.length === 0) return selectedScenario.targetVitals;
 
-    // Find bounding keyframes
     let prev = keyframes[0];
     let next = keyframes[keyframes.length - 1];
 
@@ -86,11 +117,11 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
     return interpolatedVitals;
   };
 
-  // Simulation Ticker
+  // Simulation Execution Loop
   useEffect(() => {
     if (isPlaying) {
       const stepIntervalMs = 50;
-      const stepSec = (stepIntervalMs / 1000) * playbackSpeed;
+      const stepSec = stepIntervalMs / 1000;
 
       tickerRef.current = window.setInterval(() => {
         setCurrentTimeSec((prevTime) => {
@@ -98,17 +129,15 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
 
           if (nextTime >= duration) {
             setIsPlaying(false);
-            // Apply final keyframe state
             const finalState = computeStateAtTime(duration);
             onApplyVitals(finalState, selectedScenario.targetSensors as any);
             return duration;
           }
 
-          // Apply live interpolated vitals to system
           const currentState = computeStateAtTime(nextTime);
           onApplyVitals(currentState);
 
-          // Check if passed a new keyframe with an alarm event
+          // Check for alarm events passed
           selectedScenario.keyframes.forEach((kf, idx) => {
             if (prevTime < kf.timeSec && nextTime >= kf.timeSec && idx !== lastKeyframeIndexRef.current) {
               lastKeyframeIndexRef.current = idx;
@@ -120,12 +149,14 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                   condition: kf.alarmEvent.condition,
                   propositionTriggered: kf.alarmEvent.propositionTriggered,
                 });
-                if (kf.alarmEvent.severity === 'CRITICAL') {
-                  soundEngine.playEmergencyAlarm();
-                } else if (kf.alarmEvent.severity === 'WARNING') {
-                  soundEngine.playWarning();
-                } else if (kf.alarmEvent.severity === 'TECHNICAL') {
-                  soundEngine.playTechnicalAlert();
+                if (!soundMuted) {
+                  if (kf.alarmEvent.severity === 'CRITICAL') {
+                    soundEngine.playEmergencyAlarm();
+                  } else if (kf.alarmEvent.severity === 'WARNING') {
+                    soundEngine.playWarning();
+                  } else if (kf.alarmEvent.severity === 'TECHNICAL') {
+                    soundEngine.playTechnicalAlert();
+                  }
                 }
               }
             }
@@ -141,19 +172,24 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
     return () => {
       if (tickerRef.current) clearInterval(tickerRef.current);
     };
-  }, [isPlaying, playbackSpeed, selectedScenario, duration]);
+  }, [isPlaying, selectedScenario, duration, soundMuted]);
 
-  // Handle Scenario Selection
-  const handleSelectScenario = (scenario: ScenarioDefinition) => {
+  // Handle Experience Selection
+  const handleSelectExperience = (exp: 'normal' | 'warning' | 'emergency' | 'sensor_fault' | 'recovery') => {
     soundEngine.playGateClick();
-    setSelectedScenario(scenario);
+    setActiveExperience(exp);
     setCurrentTimeSec(0);
     setIsPlaying(false);
     lastKeyframeIndexRef.current = -1;
 
-    // Reset to start of scenario
-    const startVitals = scenario.keyframes[0]?.vitals ?? DEFAULT_VITALS;
-    onApplyVitals(startVitals, scenario.keyframes[0]?.sensors as any);
+    let targetDef = PRESET_SCENARIOS[0];
+    if (exp === 'warning') targetDef = warningVariant === 'hypoxia' ? PRESET_SCENARIOS[1] : PRESET_SCENARIOS[2];
+    if (exp === 'emergency') targetDef = PRESET_SCENARIOS[3];
+    if (exp === 'sensor_fault') targetDef = PRESET_SCENARIOS[4];
+    if (exp === 'recovery') targetDef = PRESET_SCENARIOS[5];
+
+    const startVitals = targetDef.keyframes[0]?.vitals ?? DEFAULT_VITALS;
+    onApplyVitals(startVitals, targetDef.keyframes[0]?.sensors as any);
   };
 
   const handleTogglePlay = () => {
@@ -165,369 +201,650 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
     setIsPlaying(!isPlaying);
   };
 
-  const handleReset = () => {
+  const handleRestart = () => {
     soundEngine.playGateClick();
     setIsPlaying(false);
     setCurrentTimeSec(0);
     lastKeyframeIndexRef.current = -1;
-    onApplyVitals(DEFAULT_VITALS, DEFAULT_SENSORS as any);
+    const startVitals = selectedScenario.keyframes[0]?.vitals ?? DEFAULT_VITALS;
+    onApplyVitals(startVitals, selectedScenario.keyframes[0]?.sensors as any);
   };
 
-  const handleStepForward = () => {
-    soundEngine.playGateClick();
-    const keyframes = selectedScenario.keyframes;
-    const nextKf = keyframes.find((k) => k.timeSec > currentTimeSec + 0.1);
-    if (nextKf) {
-      setCurrentTimeSec(nextKf.timeSec);
-      const state = computeStateAtTime(nextKf.timeSec);
-      onApplyVitals(state, nextKf.sensors as any);
-    } else {
-      setCurrentTimeSec(duration);
-    }
+  const handleToggleSound = () => {
+    const nextMuted = !soundMuted;
+    setSoundMuted(nextMuted);
+    soundEngine.setMuted(nextMuted);
+    if (!nextMuted) soundEngine.playGateClick();
   };
 
-  const handleStepBack = () => {
-    soundEngine.playGateClick();
-    const keyframes = selectedScenario.keyframes;
-    const prevKfs = keyframes.filter((k) => k.timeSec < currentTimeSec - 0.1);
-    if (prevKfs.length > 0) {
-      const prevKf = prevKfs[prevKfs.length - 1];
-      setCurrentTimeSec(prevKf.timeSec);
-      const state = computeStateAtTime(prevKf.timeSec);
-      onApplyVitals(state, prevKf.sensors as any);
-    } else {
-      setCurrentTimeSec(0);
-    }
-  };
+  // Evaluate real-time logic propositions based on current interpolated vitals
+  const props = evaluatePropositions(currentVitals);
+  const isHypoxiaActive = props.A; // SpO2 < 90
+  const isCardiacActive = props.B; // HR < 50 or > 120
+  const isConjunctionAlert = props.E_Combined; // A and B
+  const isWarningAlert = props.W_Warning && !isConjunctionAlert; // single sensor
+  const isSensorFault = selectedScenario.id === 'sensor_fault' && currentTimeSec >= 5;
 
-  const handleScrub = (valSec: number) => {
-    setCurrentTimeSec(valSec);
-    const state = computeStateAtTime(valSec);
-    onApplyVitals(state);
-  };
-
-  const getScenarioIcon = (id: string) => {
-    switch (id) {
-      case 'normal':
-        return <ShieldCheck className="w-5 h-5 text-emerald-400" />;
-      case 'hypoxia':
-        return <Activity className="w-5 h-5 text-blue-400" />;
-      case 'tachycardia':
-        return <Flame className="w-5 h-5 text-amber-400" />;
-      case 'combined_emergency':
-        return <AlertOctagon className="w-5 h-5 text-rose-400 animate-pulse" />;
-      case 'sensor_fault':
-        return <Radio className="w-5 h-5 text-yellow-400" />;
-      case 'recovery':
-        return <CheckCircle2 className="w-5 h-5 text-teal-400" />;
-      default:
-        return <Activity className="w-5 h-5 text-blue-400" />;
-    }
-  };
-
-  // Find active narrative milestone for current time
-  const currentKeyframe = [...selectedScenario.keyframes]
-    .reverse()
-    .find((k) => currentTimeSec >= k.timeSec) || selectedScenario.keyframes[0];
+  const progressPct = Math.min(100, Math.max(0, (currentTimeSec / duration) * 100));
 
   return (
     <section id="scenarios" className="relative w-full py-16 px-4 max-w-7xl mx-auto scroll-mt-20">
       {/* Section Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase tracking-widest mb-2">
+          <div className="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
             <Activity className="w-4 h-4 text-blue-400" />
-            <span>DETERMINISTIC SIMULATION ENGINE • 6 CLINICAL SCENARIOS</span>
+            <span>INTERACTIVE SIMULATION SUITE • CLINICAL CAUSALITY</span>
           </div>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
-            THE EMERGENCY SIMULATION SUITE
+            SEE HOW DISCRETE LOGIC SAVES LIVES
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-2xl font-light">
-            Experience time-based physiological progression. Watch telemetry degrade second-by-second,
-            triggering individual warnings and conjunction emergency alerts in real time.
+            Watch how patient condition changes are detected by biological sensors, processed in real time by
+            Boolean logic gates, and synthesized into instant deterministic safety alerts.
           </p>
         </div>
 
         <button
           onClick={onRevealMath}
-          className="px-4 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-[1.02] cursor-pointer"
+          className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-[1.02] active:scale-[0.98] cursor-pointer self-start md:self-auto shrink-0"
         >
           <Zap className="w-4 h-4 fill-white" />
-          SOLVE THE MATH
+          <span>SOLVE THE MATH</span>
         </button>
       </div>
 
-      {/* 6 Scenario Selector Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {PRESET_SCENARIOS.map((sc) => {
-          const isSelected = selectedScenario.id === sc.id;
-          return (
-            <div
-              key={sc.id}
-              onClick={() => handleSelectScenario(sc)}
-              className={`p-5 rounded-2xl cursor-pointer transition-all relative overflow-hidden group border ${
-                isSelected
-                  ? sc.id === 'combined_emergency'
-                    ? 'bg-rose-950/30 border-rose-500 shadow-xl shadow-rose-950/40'
-                    : 'bg-[#101726] border-blue-500 shadow-xl shadow-blue-950/40'
-                  : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60'
-              }`}
-            >
-              {isSelected && (
-                <div
-                  className={`absolute top-0 left-0 right-0 h-1 ${
-                    sc.id === 'combined_emergency' ? 'bg-rose-500' : 'bg-blue-500'
-                  }`}
-                />
-              )}
+      {/* THE THREE PRIMARY EXPERIENCES (LARGE, VISUALLY DISTINCT CARDS) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+        {/* Experience 1: EVERYTHING IS NORMAL */}
+        <div
+          onClick={() => handleSelectExperience('normal')}
+          className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
+            activeExperience === 'normal'
+              ? 'bg-gradient-to-b from-[#081812] to-[#070e12] border-emerald-500 shadow-2xl shadow-emerald-950/50 ring-1 ring-emerald-500/50'
+              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+          }`}
+        >
+          {activeExperience === 'normal' && (
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-teal-400" />
+          )}
 
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className={`p-2.5 rounded-xl border ${
-                    isSelected ? 'bg-blue-500/15 border-blue-500/40' : 'bg-slate-800 border-slate-700'
-                  }`}>
-                    {getScenarioIcon(sc.id)}
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">
-                      {sc.badge}
-                    </span>
-                    <h3 className="font-display font-bold text-sm text-white group-hover:text-blue-300 transition-colors">
-                      {sc.title}
-                    </h3>
-                  </div>
-                </div>
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 rounded-2xl border ${
+                activeExperience === 'normal'
+                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                  : 'bg-slate-800 border-slate-700 text-slate-400'
+              }`}>
+                <ShieldCheck className="w-6 h-6" />
               </div>
-
-              <p className="text-xs text-slate-400 font-light line-clamp-2 mb-3">
-                {sc.description}
-              </p>
-
-              {/* Proposition State Badges */}
-              <div className="flex items-center gap-2 pt-3 border-t border-slate-800/80 text-[11px] font-mono">
-                <span className={`px-2 py-0.5 rounded ${sc.expectedA ? 'bg-rose-500/20 text-rose-300' : 'bg-slate-800 text-slate-400'}`}>
-                  A: {sc.expectedA ? '1' : '0'}
-                </span>
-                <span className={`px-2 py-0.5 rounded ${sc.expectedB ? 'bg-rose-500/20 text-rose-300' : 'bg-slate-800 text-slate-400'}`}>
-                  B: {sc.expectedB ? '1' : '0'}
-                </span>
-                <span className={`px-2 py-0.5 rounded font-bold ${sc.expectedE ? 'bg-rose-500 text-white font-extrabold' : 'bg-slate-800 text-slate-400'}`}>
-                  E = {sc.expectedE ? '1 (EMERGENCY)' : '0 (NORMAL)'}
-                </span>
-              </div>
+              <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
+                activeExperience === 'normal'
+                  ? 'bg-emerald-500 text-slate-950 font-black'
+                  : 'bg-slate-800 text-slate-400'
+              }`}>
+                SAFE HOMEOSTASIS
+              </span>
             </div>
-          );
-        })}
+
+            <h3 className="font-display font-black text-xl sm:text-2xl text-white tracking-tight">
+              1. EVERYTHING IS NORMAL
+            </h3>
+            <p className="text-slate-300 text-sm mt-2 font-light leading-relaxed">
+              Patient is in steady equilibrium. Oxygen and pulse are within healthy physiological limits.
+              The logic engine evaluates zero alarms.
+            </p>
+
+            <div className="mt-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 font-mono text-xs flex items-center justify-between">
+              <span className="text-slate-400">Baseline Readings:</span>
+              <span className="text-emerald-400 font-bold">SpO₂ 98% • HR 74 BPM</span>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+            <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" /> Normal Telemetry
+            </span>
+            <span className={`text-xs font-mono font-bold px-3 py-1.5 rounded-xl transition-all ${
+              activeExperience === 'normal'
+                ? 'bg-emerald-500 text-slate-950 shadow-md'
+                : 'text-slate-400 group-hover:text-white'
+            }`}>
+              {activeExperience === 'normal' ? 'SELECTED' : 'SELECT'}
+            </span>
+          </div>
+        </div>
+
+        {/* Experience 2: SOMETHING IS GOING WRONG */}
+        <div
+          onClick={() => handleSelectExperience('warning')}
+          className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
+            activeExperience === 'warning'
+              ? 'bg-gradient-to-b from-[#1c1307] to-[#0d0d12] border-amber-500 shadow-2xl shadow-amber-950/50 ring-1 ring-amber-500/50'
+              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+          }`}
+        >
+          {activeExperience === 'warning' && (
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-yellow-400" />
+          )}
+
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 rounded-2xl border ${
+                activeExperience === 'warning'
+                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-400'
+                  : 'bg-slate-800 border-slate-700 text-slate-400'
+              }`}>
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
+                activeExperience === 'warning'
+                  ? 'bg-amber-500 text-slate-950 font-black'
+                  : 'bg-slate-800 text-slate-400'
+              }`}>
+                ISOLATED WARNING
+              </span>
+            </div>
+
+            <h3 className="font-display font-black text-xl sm:text-2xl text-white tracking-tight">
+              2. SOMETHING IS GOING WRONG
+            </h3>
+            <p className="text-slate-300 text-sm mt-2 font-light leading-relaxed">
+              A single parameter deteriorates while others remain stable. An isolated warning sounds,
+              but conjunction logic suppresses a false Code Red alarm.
+            </p>
+
+            {/* Sub-variant toggle: Hypoxia vs Tachycardia */}
+            <div className="mt-4 grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950/80 border border-slate-800 font-mono text-[11px]">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  soundEngine.playGateClick();
+                  setWarningVariant('hypoxia');
+                  handleSelectExperience('warning');
+                }}
+                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center ${
+                  warningVariant === 'hypoxia'
+                    ? 'bg-amber-500 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Low O₂ (Hypoxia)
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  soundEngine.playGateClick();
+                  setWarningVariant('tachycardia');
+                  handleSelectExperience('warning');
+                }}
+                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center ${
+                  warningVariant === 'tachycardia'
+                    ? 'bg-amber-500 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                High Pulse (Tachy)
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+            <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4" /> Single Breach
+            </span>
+            <span className={`text-xs font-mono font-bold px-3 py-1.5 rounded-xl transition-all ${
+              activeExperience === 'warning'
+                ? 'bg-amber-500 text-slate-950 shadow-md'
+                : 'text-slate-400 group-hover:text-white'
+            }`}>
+              {activeExperience === 'warning' ? 'SELECTED' : 'SELECT'}
+            </span>
+          </div>
+        </div>
+
+        {/* Experience 3: EMERGENCY SITUATION */}
+        <div
+          onClick={() => handleSelectExperience('emergency')}
+          className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
+            activeExperience === 'emergency'
+              ? 'bg-gradient-to-b from-[#200709] to-[#0e0709] border-rose-500 shadow-2xl shadow-rose-950/60 ring-1 ring-rose-500/60'
+              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+          }`}
+        >
+          {activeExperience === 'emergency' && (
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-red-500 to-rose-400 animate-pulse" />
+          )}
+
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 rounded-2xl border ${
+                activeExperience === 'emergency'
+                  ? 'bg-rose-500/20 border-rose-500/40 text-rose-400'
+                  : 'bg-slate-800 border-slate-700 text-slate-400'
+              }`}>
+                <AlertOctagon className="w-6 h-6 animate-pulse" />
+              </div>
+              <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
+                activeExperience === 'emergency'
+                  ? 'bg-rose-500 text-white font-black animate-pulse'
+                  : 'bg-slate-800 text-slate-400'
+              }`}>
+                CODE RED EMERGENCY
+              </span>
+            </div>
+
+            <h3 className="font-display font-black text-xl sm:text-2xl text-white tracking-tight">
+              3. EMERGENCY SITUATION
+            </h3>
+            <p className="text-slate-300 text-sm mt-2 font-light leading-relaxed">
+              Concurrent physiological failure. Oxygen drops below 90% AND heart rate spikes over 120 BPM.
+              Conjunction ($A \land B$) is satisfied, instantly actuating Code Red.
+            </p>
+
+            <div className="mt-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 font-mono text-xs flex items-center justify-between">
+              <span className="text-slate-400">Critical Conjunction:</span>
+              <span className="text-rose-400 font-bold">SpO₂ 84% &lt; 90% ∧ HR 148 BPM</span>
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+            <span className="text-xs font-mono font-bold text-rose-400 flex items-center gap-1.5">
+              <AlertOctagon className="w-4 h-4" /> Code Red Interlock
+            </span>
+            <span className={`text-xs font-mono font-bold px-3 py-1.5 rounded-xl transition-all ${
+              activeExperience === 'emergency'
+                ? 'bg-rose-500 text-white shadow-md'
+                : 'text-slate-400 group-hover:text-white'
+            }`}>
+              {activeExperience === 'emergency' ? 'SELECTED' : 'SELECT'}
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* ACTIVE TIMELINE PLAYOUT STAGE */}
-      <div className={`rounded-2xl p-6 relative border transition-all ${
-        selectedScenario.id === 'combined_emergency'
-          ? 'border-rose-500/40 bg-[#0d0914] shadow-2xl shadow-rose-950/30'
-          : 'border-slate-800 bg-[#0b0f19] shadow-xl'
+      {/* OPTIONAL EXPERIMENTS ROW (Sensor Disconnection & Clinical Recovery) */}
+      <div className="mb-10 p-4 rounded-2xl bg-[#080c14] border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <Wrench className="w-4 h-4 text-slate-500" />
+          <span className="font-bold text-slate-300">OPTIONAL SPECIALIZED EXPERIMENTS:</span>
+        </div>
+
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => handleSelectExperience('sensor_fault')}
+            className={`px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border ${
+              activeExperience === 'sensor_fault'
+                ? 'bg-yellow-500 text-slate-950 border-yellow-400 shadow-md shadow-yellow-500/20'
+                : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+            }`}
+          >
+            <Radio className="w-3.5 h-3.5" />
+            <span>SENSOR DISCONNECTION FAULT</span>
+          </button>
+
+          <button
+            onClick={() => handleSelectExperience('recovery')}
+            className={`px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border ${
+              activeExperience === 'recovery'
+                ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-md shadow-teal-500/20'
+                : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+            }`}
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>CLINICAL RECOVERY PROTOCOL</span>
+          </button>
+        </div>
+      </div>
+
+      {/* DEDICATED IMMERSIVE SIMULATION STAGE */}
+      <div className={`rounded-3xl p-5 sm:p-7 relative border transition-all shadow-2xl ${
+        isConjunctionAlert
+          ? 'bg-[#0f070b] border-rose-500/50 shadow-rose-950/40'
+          : isWarningAlert
+          ? 'bg-[#0e0a05] border-amber-500/50 shadow-amber-950/30'
+          : isSensorFault
+          ? 'bg-[#0f0f08] border-yellow-500/50 shadow-yellow-950/30'
+          : 'bg-[#070b14] border-slate-800 shadow-black/80'
       }`}>
-        {/* Playback Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 mb-6 pb-5 border-b border-slate-800">
+        {/* Stage Header & Minimalistic Controls */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800/80">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono uppercase px-2.5 py-0.5 rounded-full bg-blue-950/80 border border-blue-500/30 text-blue-300 font-bold">
-                TIMELINE ENGINE: {selectedScenario.badge}
+            <div className="flex items-center gap-2.5">
+              <span className={`text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full font-bold border ${
+                isConjunctionAlert
+                  ? 'bg-rose-950 text-rose-300 border-rose-700 animate-pulse'
+                  : isWarningAlert
+                  ? 'bg-amber-950 text-amber-300 border-amber-700'
+                  : isSensorFault
+                  ? 'bg-yellow-950 text-yellow-300 border-yellow-700'
+                  : 'bg-emerald-950 text-emerald-300 border-emerald-700'
+              }`}>
+                {isConjunctionAlert ? 'CRITICAL STATE' : isWarningAlert ? 'WARNING STATE' : isSensorFault ? 'TECHNICAL FAULT' : 'NORMAL EQUILIBRIUM'}
               </span>
-              <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" />
+              <span className="text-xs font-mono text-slate-400">
                 {currentTimeSec.toFixed(1)}s / {duration.toFixed(1)}s
               </span>
             </div>
-            <h3 className="font-display font-extrabold text-xl text-white mt-1.5">
+
+            <h3 className="font-display font-black text-2xl text-white mt-1">
               {selectedScenario.title}
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5 font-mono">
-              Clinical Context: {selectedScenario.clinicalContext}
+            <p className="text-slate-400 text-xs mt-0.5 font-light">
+              {selectedScenario.clinicalContext}
             </p>
           </div>
 
-          {/* Interactive Player Controls */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {/* Play/Pause */}
+          {/* Clean 2-Button Operation + Sound Toggle */}
+          <div className="flex items-center gap-3">
             <button
               onClick={handleTogglePlay}
-              className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all shadow-md ${
+              className={`px-6 py-3 rounded-2xl font-mono text-xs font-black tracking-wider uppercase flex items-center gap-2.5 transition-all shadow-xl cursor-pointer ${
                 isPlaying
-                  ? 'bg-amber-500 text-slate-950 shadow-amber-500/30'
-                  : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30'
+                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/30'
+                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-blue-600/40 hover:scale-[1.02]'
               }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
-              <span>{isPlaying ? 'PAUSE TIMELINE' : 'PLAY SIMULATION'}</span>
+              <span>{isPlaying ? 'PAUSE SIMULATION' : currentTimeSec > 0 ? 'RESUME SIMULATION' : 'START SIMULATION'}</span>
             </button>
 
-            {/* Step Back */}
             <button
-              onClick={handleStepBack}
-              disabled={currentTimeSec <= 0}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white disabled:opacity-40"
-              title="Previous Keyframe"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            {/* Step Forward */}
-            <button
-              onClick={handleStepForward}
-              disabled={currentTimeSec >= duration}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white disabled:opacity-40"
-              title="Next Keyframe"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-
-            {/* Reset */}
-            <button
-              onClick={handleReset}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white"
-              title="Reset to Baseline Homeostasis"
+              onClick={handleRestart}
+              className="p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white transition-all cursor-pointer"
+              title="Restart Simulation"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
 
-            {/* Playback Speed */}
-            <div className="flex items-center gap-1 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-mono ml-1">
-              <FastForward className="w-3.5 h-3.5 text-slate-500 ml-1" />
-              {[1, 2].map((sp) => (
-                <button
-                  key={sp}
-                  onClick={() => setPlaybackSpeed(sp)}
-                  className={`px-2 py-1 rounded-lg text-[10px] font-bold ${
-                    playbackSpeed === sp ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {sp}x
-                </button>
-              ))}
-            </div>
+            <button
+              onClick={handleToggleSound}
+              className={`p-3 rounded-2xl border transition-all cursor-pointer ${
+                !soundMuted
+                  ? 'bg-blue-600/20 border-blue-500 text-blue-400'
+                  : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'
+              }`}
+              title={soundMuted ? 'Telemetry Audio Muted (Click to Unmute)' : 'Telemetry Audio Active (Click to Mute)'}
+            >
+              {!soundMuted ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
-        {/* Time Scrubber Slider */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center text-xs font-mono text-slate-400 mb-2">
-            <span>SCRUB SIMULATION TIMELINE:</span>
-            <span className="text-white font-bold">{currentTimeSec.toFixed(1)}s elapsed</span>
-          </div>
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            step="0.1"
-            value={currentTimeSec}
-            onChange={(e) => handleScrub(Number(e.target.value))}
-            className="w-full accent-blue-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+        {/* Clean Progress Line */}
+        <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mb-6 border border-slate-800">
+          <div
+            className={`h-full transition-all duration-75 ${
+              isConjunctionAlert ? 'bg-rose-500' : isWarningAlert ? 'bg-amber-500' : 'bg-blue-500'
+            }`}
+            style={{ width: `${progressPct}%` }}
           />
-          <div className="flex justify-between text-[10px] font-mono text-slate-500 mt-1">
-            <span>0.0s (Baseline)</span>
-            <span>{(duration / 2).toFixed(1)}s (Transition)</span>
-            <span>{duration.toFixed(1)}s (Terminal State)</span>
-          </div>
         </div>
 
-        {/* Active Keyframe Callout Banner */}
-        <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="text-[10px] font-mono text-blue-400 font-bold uppercase tracking-wider">
-              ACTIVE STAGE AT {currentTimeSec.toFixed(1)}s: {currentKeyframe.label}
-            </div>
-            <p className="text-sm font-sans text-slate-200 mt-1 font-medium">
-              {currentKeyframe.narrative}
-            </p>
-          </div>
+        {/* THE VISUAL SIMULATION ARENA (TWO CONNECTED COLUMNS) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* ZONE A: THE ICU PATIENT & CLINICAL MONITOR (5 cols) */}
+          <div className="lg:col-span-5 rounded-2xl bg-[#090d16] border border-slate-800 p-5 flex flex-col justify-between shadow-xl relative overflow-hidden">
+            {/* Background Image of Modern ICU Room */}
+            <div
+              className="absolute inset-0 opacity-15 bg-cover bg-center mix-blend-luminosity pointer-events-none"
+              style={{ backgroundImage: `url('/icu-room.jpg')` }}
+            />
 
-          <div className="text-xs font-mono text-slate-400 shrink-0">
-            {isPlaying ? (
-              <span className="px-2.5 py-1 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40 font-bold animate-pulse">
-                SIMULATING IN REAL-TIME
-              </span>
-            ) : (
-              <span className="px-2.5 py-1 rounded bg-slate-800 text-slate-400">
-                PAUSED AT {currentTimeSec.toFixed(1)}s
-              </span>
-            )}
-          </div>
-        </div>
+            <div className="relative z-10">
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-bold">
+                  <Activity className="w-3.5 h-3.5 text-blue-400" /> BEDSIDE PATIENT TELEMETRY MONITOR
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
+                  currentVitals.sensorLeadAttached ? 'bg-emerald-950 text-emerald-400' : 'bg-yellow-950 text-yellow-400'
+                }`}>
+                  {currentVitals.sensorLeadAttached ? 'LEADS ATTACHED' : 'LEAD FAULT'}
+                </span>
+              </div>
 
-        {/* Chronological Keyframe Steps Progression */}
-        <div className="space-y-2.5">
-          {selectedScenario.keyframes.map((kf, idx) => {
-            const isReached = currentTimeSec >= kf.timeSec;
-            const isCurrent = currentKeyframe.timeSec === kf.timeSec;
+              {/* Oscilloscope Waveform Display */}
+              <div className="rounded-xl bg-[#03060d] border border-slate-800 p-2 mb-4 overflow-hidden relative">
+                <div className="text-[10px] font-mono text-cyan-400 font-bold px-2 py-1 flex justify-between">
+                  <span>LEAD II (ECG)</span>
+                  <span>{currentVitals.heartRate} BPM</span>
+                </div>
+                <WaveformCanvas
+                  type="ecg"
+                  bpm={currentVitals.heartRate}
+                  oxygen={currentVitals.oxygen}
+                  color={isCardiacActive ? '#f43f5e' : '#38bdf8'}
+                  glowColor={isCardiacActive ? 'rgba(244, 63, 94, 0.4)' : 'rgba(56, 189, 248, 0.4)'}
+                  height={80}
+                  isFault={!currentVitals.sensorLeadAttached}
+                />
+              </div>
 
-            return (
-              <div
-                key={idx}
-                onClick={() => {
-                  soundEngine.playGateClick();
-                  handleScrub(kf.timeSec);
-                }}
-                className={`p-3.5 rounded-xl cursor-pointer transition-all flex items-center justify-between gap-4 border ${
-                  isCurrent
-                    ? selectedScenario.id === 'combined_emergency'
-                      ? 'bg-rose-950/40 border-rose-500 text-white font-semibold shadow-md'
-                      : 'bg-blue-950/40 border-blue-500 text-white font-semibold shadow-md'
-                    : isReached
-                    ? 'bg-slate-900/40 border-slate-800 text-slate-300'
-                    : 'bg-slate-900/15 border-slate-800/40 text-slate-600'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-mono font-bold shrink-0 ${
-                      isCurrent
-                        ? selectedScenario.id === 'combined_emergency'
-                          ? 'bg-rose-500 text-white'
-                          : 'bg-blue-600 text-white'
-                        : isReached
-                        ? 'bg-slate-800 text-slate-300'
-                        : 'bg-slate-900 text-slate-600'
-                    }`}
-                  >
-                    {kf.timeSec}s
-                  </span>
-                  <div>
-                    <div className="font-mono text-xs font-bold text-white">
-                      {kf.label}
-                    </div>
-                    <div className="font-mono text-[11px] text-slate-400">
-                      {kf.narrative}
-                    </div>
+              {/* Digital Parameter Displays */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                {/* Oxygen Saturation */}
+                <div className={`p-3.5 rounded-xl border transition-all ${
+                  isHypoxiaActive
+                    ? 'bg-rose-950/40 border-rose-500/80 shadow-md shadow-rose-950/40'
+                    : 'bg-slate-900/90 border-slate-800'
+                }`}>
+                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                    <span className="font-bold uppercase">SpO₂ OXYGEN</span>
+                    <span className="text-slate-500">&lt; 90%</span>
+                  </div>
+                  <div className={`text-3xl font-mono font-black mt-1 ${
+                    isHypoxiaActive ? 'text-rose-400 animate-pulse' : 'text-cyan-400'
+                  }`}>
+                    {currentVitals.oxygen}%
+                  </div>
+                  <div className={`text-[10px] font-mono mt-1 ${isHypoxiaActive ? 'text-rose-400 font-bold' : 'text-slate-500'}`}>
+                    {isHypoxiaActive ? 'CRITICAL HYPOXIA' : 'NORMAL RANGE'}
                   </div>
                 </div>
 
-                <div className="font-mono text-[10px] text-slate-500 hidden sm:block shrink-0">
-                  {isCurrent ? (
-                    <span className="text-blue-400 font-bold uppercase animate-pulse">ACTIVE NOW</span>
-                  ) : isReached ? (
-                    <span className="text-emerald-500 font-bold">COMPLETED ✓</span>
-                  ) : (
-                    <span>QUEUED</span>
-                  )}
+                {/* Heart Rate */}
+                <div className={`p-3.5 rounded-xl border transition-all ${
+                  isCardiacActive
+                    ? 'bg-rose-950/40 border-rose-500/80 shadow-md shadow-rose-950/40'
+                    : 'bg-slate-900/90 border-slate-800'
+                }`}>
+                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                    <span className="font-bold uppercase flex items-center gap-1">
+                      <Heart className="w-3 h-3 text-rose-400" /> HEART RATE
+                    </span>
+                    <span className="text-slate-500">[50-120]</span>
+                  </div>
+                  <div className={`text-3xl font-mono font-black mt-1 ${
+                    isCardiacActive ? 'text-rose-400 animate-pulse' : 'text-white'
+                  }`}>
+                    {currentVitals.heartRate} <span className="text-xs font-normal text-slate-400">BPM</span>
+                  </div>
+                  <div className={`text-[10px] font-mono mt-1 ${isCardiacActive ? 'text-rose-400 font-bold' : 'text-slate-500'}`}>
+                    {isCardiacActive ? (currentVitals.heartRate > 120 ? 'TACHYCARDIA' : 'BRADYCARDIA') : 'SINUS RHYTHM'}
+                  </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
 
-        {/* Footer Link to Mathematical Proof */}
-        <div className="mt-6 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-slate-400">
-          <span>Continuous data piped live into Patient Telemetry & Logic Engine above.</span>
-          <button
-            onClick={onRevealMath}
-            className="text-blue-400 font-bold hover:underline flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
-          >
-            <Zap className="w-3.5 h-3.5 fill-blue-400" />
-            Launch Solve the Math Laboratory for this Scenario
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+              {/* Secondary Vitals */}
+              <div className="grid grid-cols-2 gap-3 text-xs font-mono p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">NIBP:</span>
+                  <span className="text-slate-300 font-bold">{currentVitals.bloodPressureSystolic}/{currentVitals.bloodPressureDiastolic}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Resp Rate:</span>
+                  <span className="text-slate-300 font-bold">{currentVitals.respiratoryRate} RPM</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative z-10 mt-4 pt-3 border-t border-slate-800/80 text-[11px] font-mono text-slate-400 flex items-center justify-between">
+              <span>Patient Sensor Channels: Active</span>
+              <span className="text-blue-400 font-bold">500 Hz Sampling</span>
+            </div>
+          </div>
+
+          {/* ZONE B: REAL-TIME SIGNAL CONDUIT & LOGIC GATE (7 cols) */}
+          <div className="lg:col-span-7 rounded-2xl bg-[#090d16] border border-slate-800 p-5 flex flex-col justify-between shadow-xl">
+            <div>
+              <div className="flex justify-between items-center mb-4">
+                <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-bold">
+                  <Cpu className="w-3.5 h-3.5 text-blue-400" />
+                  REAL-TIME SIGNAL EVALUATION & LOGIC ENGINE
+                </span>
+                <span className="text-[10px] font-mono text-blue-400">
+                  SEQUENCE: SENSOR → COMPARATOR → GATE → ALARM
+                </span>
+              </div>
+
+              {/* VISUAL SIGNAL CONDUITS & AND GATE DIAGRAM */}
+              <div className="p-4 rounded-xl bg-[#050810] border border-slate-800/90 relative overflow-hidden">
+                <div className="space-y-4">
+                  {/* Channel A Signal Wire */}
+                  <div className="flex items-center gap-3 font-mono text-xs">
+                    <div className="w-28 text-slate-400 shrink-0">
+                      <div className="text-[10px] uppercase text-cyan-400 font-bold">O₂ Channel</div>
+                      <div className="text-white font-bold">{currentVitals.oxygen}% &lt; 90</div>
+                    </div>
+
+                    {/* Animated Wire A */}
+                    <div className="flex-1 h-3 rounded-full bg-slate-900 border border-slate-800 relative overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${
+                          isHypoxiaActive
+                            ? 'bg-rose-500 shadow-md shadow-rose-500/80 w-full animate-pulse'
+                            : 'bg-slate-800 w-full'
+                        }`}
+                      />
+                    </div>
+
+                    <div className={`w-28 text-right font-bold text-xs shrink-0 ${
+                      isHypoxiaActive ? 'text-rose-400 font-black' : 'text-slate-500'
+                    }`}>
+                      A = {isHypoxiaActive ? '1 (HIGH)' : '0 (LOW)'}
+                    </div>
+                  </div>
+
+                  {/* Channel B Signal Wire */}
+                  <div className="flex items-center gap-3 font-mono text-xs">
+                    <div className="w-28 text-slate-400 shrink-0">
+                      <div className="text-[10px] uppercase text-rose-400 font-bold">ECG Channel</div>
+                      <div className="text-white font-bold">{currentVitals.heartRate} BPM</div>
+                    </div>
+
+                    {/* Animated Wire B */}
+                    <div className="flex-1 h-3 rounded-full bg-slate-900 border border-slate-800 relative overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${
+                          isCardiacActive
+                            ? 'bg-rose-500 shadow-md shadow-rose-500/80 w-full animate-pulse'
+                            : 'bg-slate-800 w-full'
+                        }`}
+                      />
+                    </div>
+
+                    <div className={`w-28 text-right font-bold text-xs shrink-0 ${
+                      isCardiacActive ? 'text-rose-400 font-black' : 'text-slate-500'
+                    }`}>
+                      B = {isCardiacActive ? '1 (HIGH)' : '0 (LOW)'}
+                    </div>
+                  </div>
+
+                  {/* Central AND Gate Evaluator Box */}
+                  <div className={`p-4 rounded-xl border flex items-center justify-between font-mono transition-all ${
+                    isConjunctionAlert
+                      ? 'bg-rose-950/60 border-rose-500 text-white shadow-xl shadow-rose-950/60 animate-pulse'
+                      : isWarningAlert
+                      ? 'bg-amber-950/40 border-amber-500/60 text-amber-200'
+                      : 'bg-slate-900 border-slate-800 text-slate-300'
+                  }`}>
+                    <div>
+                      <div className="text-[10px] uppercase font-bold text-slate-400">
+                        CONJUNCTION GATE: E = A ∧ B
+                      </div>
+                      <div className="text-lg font-black mt-0.5">
+                        {isHypoxiaActive ? '1' : '0'} ∧ {isCardiacActive ? '1' : '0'} = {isConjunctionAlert ? '1 (EMERGENCY)' : '0 (QUIESCENT)'}
+                      </div>
+                    </div>
+
+                    <div className={`px-3 py-1.5 rounded-lg text-xs font-black ${
+                      isConjunctionAlert
+                        ? 'bg-rose-500 text-white shadow-lg'
+                        : isWarningAlert
+                        ? 'bg-amber-500 text-slate-950'
+                        : 'bg-slate-800 text-slate-400'
+                    }`}>
+                      GATE OUTPUT: {isConjunctionAlert ? 'HIGH (1)' : 'LOW (0)'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* RESULTING ALERT ACTUATION BANNER */}
+              <div className={`mt-4 p-4 rounded-xl border flex items-center gap-3 transition-all ${
+                isConjunctionAlert
+                  ? 'bg-rose-600 text-white border-rose-400 shadow-xl shadow-rose-600/40 animate-pulse'
+                  : isWarningAlert
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50'
+                  : isSensorFault
+                  ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50'
+                  : 'bg-emerald-950/30 text-emerald-300 border-emerald-500/30'
+              }`}>
+                {isConjunctionAlert ? (
+                  <AlertOctagon className="w-6 h-6 shrink-0 animate-bounce" />
+                ) : isWarningAlert ? (
+                  <AlertTriangle className="w-6 h-6 shrink-0" />
+                ) : isSensorFault ? (
+                  <Radio className="w-6 h-6 shrink-0" />
+                ) : (
+                  <ShieldCheck className="w-6 h-6 shrink-0" />
+                )}
+
+                <div className="flex-1 font-mono text-xs">
+                  <div className="font-extrabold uppercase">
+                    {isConjunctionAlert
+                      ? 'CODE RED EMERGENCY INTERLOCK TRIPPED'
+                      : isWarningAlert
+                      ? 'ISOLATED ADVISORY WARNING (CODE RED SUPPRESSED)'
+                      : isSensorFault
+                      ? 'TECHNICAL SENSOR FAULT DETECTED (NOT CARDIAC EMERGENCY)'
+                      : 'NORMAL HOMEOSTASIS PRESERVED'}
+                  </div>
+                  <div className="text-[11px] opacity-90 mt-0.5 font-sans">
+                    {isConjunctionAlert
+                      ? 'Simultaneous respiratory and circulatory failure detected. Both premises verified true.'
+                      : isWarningAlert
+                      ? 'Single vital deviation. The AND gate suppresses false Code Red alarms.'
+                      : isSensorFault
+                      ? 'Electrode impedance exceeded limits. System flags lead-off without triggering false resuscitation.'
+                      : 'All vital signs safely within calibrated physiological boundaries.'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Explanatory Footer with SOLVE THE MATH Action */}
+            <div className="mt-5 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+              <span className="text-slate-400">
+                Want to examine the mathematical proof for this scenario?
+              </span>
+              <button
+                onClick={onRevealMath}
+                className="text-blue-400 font-bold hover:text-blue-300 hover:underline flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+              >
+                <Zap className="w-3.5 h-3.5 fill-blue-400" />
+                <span>OPEN IN SOLVE THE MATH</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
+export default ScenarioPlayer;
