@@ -230,24 +230,23 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
   return (
     <section id="scenarios" className="relative w-full py-16 px-4 max-w-7xl mx-auto scroll-mt-20">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-[#faf6f0]/8">
         <div>
-          <div className="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
-            <Activity className="w-4 h-4 text-blue-400" />
-            <span>INTERACTIVE SIMULATION SUITE • CLINICAL CAUSALITY</span>
+          <div className="flex items-center gap-2 text-[#d96347] font-mono text-xs uppercase tracking-widest mb-2 font-bold">
+            <Activity className="w-4 h-4 text-[#5da283]" />
+            <span>INTERACTIVE SIMULATION SCENARIOS</span>
           </div>
-          <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
-            SEE HOW DISCRETE LOGIC SAVES LIVES
+          <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-[#faf6f0] tracking-tight">
+            SEE HOW DISCRETE LOGIC WORKS
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-2xl font-light">
-            Watch how patient condition changes are detected by biological sensors, processed in real time by
-            Boolean logic gates, and synthesized into instant deterministic safety alerts.
+          <p className="text-[#c5beaf] text-sm sm:text-base mt-2 max-w-2xl font-light">
+            Watch how vital signs change, how sensors detect the change, and how the Boolean logic engine decides whether to sound an isolated warning or a full emergency alert.
           </p>
         </div>
 
         <button
           onClick={onRevealMath}
-          className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white shadow-xl shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-[1.02] active:scale-[0.98] cursor-pointer self-start md:self-auto shrink-0"
+          className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-[#d96347] to-[#e5933a] hover:from-[#e06d53] hover:to-[#efa347] text-white shadow-xl shadow-[#d96347]/25 hover:scale-[1.02] active:scale-[0.98] cursor-pointer self-start md:self-auto shrink-0"
         >
           <Zap className="w-4 h-4 fill-white" />
           <span>SOLVE THE MATH</span>
@@ -468,8 +467,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
       {/* OPTIONAL EXPERIMENTS ROW (Sensor Disconnection & Clinical Recovery) */}
       <div className="mb-10 p-4 rounded-2xl bg-[#080c14] border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
-          <Wrench className="w-4 h-4 text-slate-500" />
-          <span className="font-bold text-slate-300">OPTIONAL SPECIALIZED EXPERIMENTS:</span>
+          <Wrench className="w-4 h-4 text-[#c5beaf]" />
+          <span className="font-bold text-[#faf6f0]">ADDITIONAL SIMULATION EXPERIMENTS:</span>
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
@@ -477,8 +476,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             onClick={() => handleSelectExperience('sensor_fault')}
             className={`px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border ${
               activeExperience === 'sensor_fault'
-                ? 'bg-yellow-500 text-slate-950 border-yellow-400 shadow-md shadow-yellow-500/20'
-                : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+                ? 'bg-[#e5933a] text-[#111215] border-[#e5933a] shadow-md shadow-[#e5933a]/20'
+                : 'bg-[#181a20] border-[#faf6f0]/10 text-[#c5beaf] hover:text-white hover:border-[#faf6f0]/25'
             }`}
           >
             <Radio className="w-3.5 h-3.5" />
@@ -489,8 +488,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             onClick={() => handleSelectExperience('recovery')}
             className={`px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 cursor-pointer border ${
               activeExperience === 'recovery'
-                ? 'bg-teal-500 text-slate-950 border-teal-400 shadow-md shadow-teal-500/20'
-                : 'bg-slate-900 border-slate-800 text-slate-300 hover:text-white hover:border-slate-700'
+                ? 'bg-[#5da283] text-[#111215] border-[#5da283] shadow-md shadow-[#5da283]/20'
+                : 'bg-[#181a20] border-[#faf6f0]/10 text-[#c5beaf] hover:text-white hover:border-[#faf6f0]/25'
             }`}
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
@@ -502,37 +501,37 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
       {/* DEDICATED IMMERSIVE SIMULATION STAGE */}
       <div className={`rounded-3xl p-5 sm:p-7 relative border transition-all shadow-2xl ${
         isConjunctionAlert
-          ? 'bg-[#0f070b] border-rose-500/50 shadow-rose-950/40'
+          ? 'bg-[#1a1215] border-[#d96347]/60 shadow-[#d96347]/20'
           : isWarningAlert
-          ? 'bg-[#0e0a05] border-amber-500/50 shadow-amber-950/30'
+          ? 'bg-[#181512] border-[#e5933a]/60 shadow-[#e5933a]/15'
           : isSensorFault
-          ? 'bg-[#0f0f08] border-yellow-500/50 shadow-yellow-950/30'
-          : 'bg-[#070b14] border-slate-800 shadow-black/80'
+          ? 'bg-[#181612] border-[#e5933a]/60 shadow-[#e5933a]/15'
+          : 'bg-[#14161c] border-[#faf6f0]/10 shadow-black/80'
       }`}>
         {/* Stage Header & Minimalistic Controls */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800/80">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#faf6f0]/8">
           <div>
             <div className="flex items-center gap-2.5">
               <span className={`text-[10px] font-mono uppercase px-2.5 py-0.5 rounded-full font-bold border ${
                 isConjunctionAlert
-                  ? 'bg-rose-950 text-rose-300 border-rose-700 animate-pulse'
+                  ? 'bg-[#d96347]/20 text-[#d96347] border-[#d96347]/50 animate-pulse'
                   : isWarningAlert
-                  ? 'bg-amber-950 text-amber-300 border-amber-700'
+                  ? 'bg-[#e5933a]/20 text-[#e5933a] border-[#e5933a]/50'
                   : isSensorFault
-                  ? 'bg-yellow-950 text-yellow-300 border-yellow-700'
-                  : 'bg-emerald-950 text-emerald-300 border-emerald-700'
+                  ? 'bg-[#e5933a]/20 text-[#e5933a] border-[#e5933a]/50'
+                  : 'bg-[#5da283]/20 text-[#5da283] border-[#5da283]/40'
               }`}>
-                {isConjunctionAlert ? 'CRITICAL STATE' : isWarningAlert ? 'WARNING STATE' : isSensorFault ? 'TECHNICAL FAULT' : 'NORMAL EQUILIBRIUM'}
+                {isConjunctionAlert ? 'CRITICAL STATE' : isWarningAlert ? 'WARNING STATE' : isSensorFault ? 'SENSOR FAULT' : 'NORMAL EQUILIBRIUM'}
               </span>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-[#c5beaf]">
                 {currentTimeSec.toFixed(1)}s / {duration.toFixed(1)}s
               </span>
             </div>
 
-            <h3 className="font-display font-black text-2xl text-white mt-1">
+            <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
               {selectedScenario.title}
             </h3>
-            <p className="text-slate-400 text-xs mt-0.5 font-light">
+            <p className="text-[#c5beaf] text-xs mt-0.5 font-light">
               {selectedScenario.clinicalContext}
             </p>
           </div>
@@ -543,8 +542,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               onClick={handleTogglePlay}
               className={`px-6 py-3 rounded-2xl font-mono text-xs font-black tracking-wider uppercase flex items-center gap-2.5 transition-all shadow-xl cursor-pointer ${
                 isPlaying
-                  ? 'bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-amber-500/30'
-                  : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-blue-600/40 hover:scale-[1.02]'
+                  ? 'bg-[#e5933a] hover:bg-[#efa347] text-[#111215] shadow-[#e5933a]/25'
+                  : 'bg-gradient-to-r from-[#d96347] to-[#e5933a] hover:from-[#e26d5c] hover:to-[#efa347] text-white shadow-[#d96347]/25 hover:scale-[1.02]'
               }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current" />}
@@ -553,7 +552,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
 
             <button
               onClick={handleRestart}
-              className="p-3 rounded-2xl bg-slate-900 border border-slate-700 hover:border-slate-600 text-slate-300 hover:text-white transition-all cursor-pointer"
+              className="p-3 rounded-2xl bg-[#1e2027] border border-[#faf6f0]/10 hover:border-[#faf6f0]/25 text-[#c5beaf] hover:text-white transition-all cursor-pointer"
               title="Restart Simulation"
             >
               <RotateCcw className="w-4 h-4" />
@@ -563,8 +562,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               onClick={handleToggleSound}
               className={`p-3 rounded-2xl border transition-all cursor-pointer ${
                 !soundMuted
-                  ? 'bg-blue-600/20 border-blue-500 text-blue-400'
-                  : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'
+                  ? 'bg-[#5da283]/20 border-[#5da283] text-[#5da283]'
+                  : 'bg-[#1e2027] border-[#faf6f0]/10 text-[#7a7873] hover:text-[#c5beaf]'
               }`}
               title={soundMuted ? 'Telemetry Audio Muted (Click to Unmute)' : 'Telemetry Audio Active (Click to Mute)'}
             >
@@ -574,10 +573,10 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
         </div>
 
         {/* Clean Progress Line */}
-        <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden mb-6 border border-slate-800">
+        <div className="w-full h-1.5 bg-[#101217] rounded-full overflow-hidden mb-6 border border-[#faf6f0]/8">
           <div
             className={`h-full transition-all duration-75 ${
-              isConjunctionAlert ? 'bg-rose-500' : isWarningAlert ? 'bg-amber-500' : 'bg-blue-500'
+              isConjunctionAlert ? 'bg-[#d96347]' : isWarningAlert ? 'bg-[#e5933a]' : 'bg-[#5da283]'
             }`}
             style={{ width: `${progressPct}%` }}
           />
@@ -587,28 +586,28 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* ZONE A: THE ICU PATIENT & CLINICAL MONITOR (5 cols) */}
-          <div className="lg:col-span-5 rounded-2xl bg-[#090d16] border border-slate-800 p-5 flex flex-col justify-between shadow-xl relative overflow-hidden">
+          <div className="lg:col-span-5 rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-5 flex flex-col justify-between shadow-xl relative overflow-hidden">
             {/* Background Image of Modern ICU Room */}
             <div
-              className="absolute inset-0 opacity-15 bg-cover bg-center mix-blend-luminosity pointer-events-none"
-              style={{ backgroundImage: `url('${import.meta.env.BASE_URL}icu-room.jpg')` }}
+              className="absolute inset-0 opacity-20 bg-cover bg-center mix-blend-luminosity pointer-events-none"
+              style={{ backgroundImage: `url('${import.meta.env.BASE_URL}warm-icu-room.jpg')` }}
             />
 
             <div className="relative z-10">
               <div className="flex justify-between items-center mb-3">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-bold">
-                  <Activity className="w-3.5 h-3.5 text-blue-400" /> BEDSIDE PATIENT TELEMETRY MONITOR
+                <span className="font-mono text-[10px] uppercase tracking-wider text-[#c5beaf] flex items-center gap-1.5 font-bold">
+                  <Activity className="w-3.5 h-3.5 text-[#5da283]" /> BEDSIDE PATIENT MONITOR
                 </span>
                 <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-bold ${
-                  currentVitals.sensorLeadAttached ? 'bg-emerald-950 text-emerald-400' : 'bg-yellow-950 text-yellow-400'
+                  currentVitals.sensorLeadAttached ? 'bg-[#5da283]/20 text-[#5da283]' : 'bg-[#e5933a]/20 text-[#e5933a]'
                 }`}>
-                  {currentVitals.sensorLeadAttached ? 'LEADS ATTACHED' : 'LEAD FAULT'}
+                  {currentVitals.sensorLeadAttached ? 'SENSORS ATTACHED' : 'SENSOR FAULT'}
                 </span>
               </div>
 
               {/* Oscilloscope Waveform Display */}
-              <div className="rounded-xl bg-[#03060d] border border-slate-800 p-2 mb-4 overflow-hidden relative">
-                <div className="text-[10px] font-mono text-cyan-400 font-bold px-2 py-1 flex justify-between">
+              <div className="rounded-xl bg-[#0e1014] border border-[#faf6f0]/8 p-2 mb-4 overflow-hidden relative">
+                <div className="text-[10px] font-mono text-[#5da283] font-bold px-2 py-1 flex justify-between">
                   <span>LEAD II (ECG)</span>
                   <span>{currentVitals.heartRate} BPM</span>
                 </div>
@@ -616,8 +615,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                   type="ecg"
                   bpm={currentVitals.heartRate}
                   oxygen={currentVitals.oxygen}
-                  color={isCardiacActive ? '#f43f5e' : '#38bdf8'}
-                  glowColor={isCardiacActive ? 'rgba(244, 63, 94, 0.4)' : 'rgba(56, 189, 248, 0.4)'}
+                  color={isCardiacActive ? '#d96347' : '#5da283'}
+                  glowColor={isCardiacActive ? 'rgba(217, 99, 71, 0.4)' : 'rgba(93, 162, 131, 0.4)'}
                   height={80}
                   isFault={!currentVitals.sensorLeadAttached}
                 />
@@ -628,101 +627,101 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                 {/* Oxygen Saturation */}
                 <div className={`p-3.5 rounded-xl border transition-all ${
                   isHypoxiaActive
-                    ? 'bg-rose-950/40 border-rose-500/80 shadow-md shadow-rose-950/40'
-                    : 'bg-slate-900/90 border-slate-800'
+                    ? 'bg-[#d96347]/15 border-[#d96347]/60 shadow-md shadow-[#d96347]/10'
+                    : 'bg-[#181a20] border-[#faf6f0]/8'
                 }`}>
-                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                  <div className="flex justify-between items-center text-[10px] font-mono text-[#c5beaf]">
                     <span className="font-bold uppercase">SpO₂ OXYGEN</span>
-                    <span className="text-slate-500">&lt; 90%</span>
+                    <span className="text-[#c5beaf]">&lt; 90%</span>
                   </div>
                   <div className={`text-3xl font-mono font-black mt-1 ${
-                    isHypoxiaActive ? 'text-rose-400 animate-pulse' : 'text-cyan-400'
+                    isHypoxiaActive ? 'text-[#d96347] animate-pulse' : 'text-[#faf6f0]'
                   }`}>
                     {currentVitals.oxygen}%
                   </div>
-                  <div className={`text-[10px] font-mono mt-1 ${isHypoxiaActive ? 'text-rose-400 font-bold' : 'text-slate-500'}`}>
-                    {isHypoxiaActive ? 'CRITICAL HYPOXIA' : 'NORMAL RANGE'}
+                  <div className={`text-[10px] font-mono mt-1 ${isHypoxiaActive ? 'text-[#d96347] font-bold' : 'text-[#5da283]'}`}>
+                    {isHypoxiaActive ? 'LOW OXYGEN WARNING' : 'NORMAL OXYGEN'}
                   </div>
                 </div>
 
                 {/* Heart Rate */}
                 <div className={`p-3.5 rounded-xl border transition-all ${
                   isCardiacActive
-                    ? 'bg-rose-950/40 border-rose-500/80 shadow-md shadow-rose-950/40'
-                    : 'bg-slate-900/90 border-slate-800'
+                    ? 'bg-[#d96347]/15 border-[#d96347]/60 shadow-md shadow-[#d96347]/10'
+                    : 'bg-[#181a20] border-[#faf6f0]/8'
                 }`}>
-                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+                  <div className="flex justify-between items-center text-[10px] font-mono text-[#c5beaf]">
                     <span className="font-bold uppercase flex items-center gap-1">
-                      <Heart className="w-3 h-3 text-rose-400" /> HEART RATE
+                      <Heart className="w-3 h-3 text-[#d96347]" /> HEART RATE
                     </span>
-                    <span className="text-slate-500">[50-120]</span>
+                    <span className="text-[#c5beaf]">[50-120]</span>
                   </div>
                   <div className={`text-3xl font-mono font-black mt-1 ${
-                    isCardiacActive ? 'text-rose-400 animate-pulse' : 'text-white'
+                    isCardiacActive ? 'text-[#d96347] animate-pulse' : 'text-[#faf6f0]'
                   }`}>
-                    {currentVitals.heartRate} <span className="text-xs font-normal text-slate-400">BPM</span>
+                    {currentVitals.heartRate} <span className="text-xs font-normal text-[#c5beaf]">BPM</span>
                   </div>
-                  <div className={`text-[10px] font-mono mt-1 ${isCardiacActive ? 'text-rose-400 font-bold' : 'text-slate-500'}`}>
-                    {isCardiacActive ? (currentVitals.heartRate > 120 ? 'TACHYCARDIA' : 'BRADYCARDIA') : 'SINUS RHYTHM'}
+                  <div className={`text-[10px] font-mono mt-1 ${isCardiacActive ? 'text-[#d96347] font-bold' : 'text-[#5da283]'}`}>
+                    {isCardiacActive ? (currentVitals.heartRate > 120 ? 'HIGH PULSE' : 'LOW PULSE') : 'NORMAL RHYTHM'}
                   </div>
                 </div>
               </div>
 
               {/* Secondary Vitals */}
-              <div className="grid grid-cols-2 gap-3 text-xs font-mono p-3 rounded-xl bg-slate-950/80 border border-slate-800">
+              <div className="grid grid-cols-2 gap-3 text-xs font-mono p-3 rounded-xl bg-[#0e1014] border border-[#faf6f0]/8">
                 <div className="flex justify-between">
-                  <span className="text-slate-500">NIBP:</span>
-                  <span className="text-slate-300 font-bold">{currentVitals.bloodPressureSystolic}/{currentVitals.bloodPressureDiastolic}</span>
+                  <span className="text-[#c5beaf]">Blood Pressure:</span>
+                  <span className="text-[#faf6f0] font-bold">{currentVitals.bloodPressureSystolic}/{currentVitals.bloodPressureDiastolic}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Resp Rate:</span>
-                  <span className="text-slate-300 font-bold">{currentVitals.respiratoryRate} RPM</span>
+                  <span className="text-[#c5beaf]">Breathing Rate:</span>
+                  <span className="text-[#faf6f0] font-bold">{currentVitals.respiratoryRate} RPM</span>
                 </div>
               </div>
             </div>
 
-            <div className="relative z-10 mt-4 pt-3 border-t border-slate-800/80 text-[11px] font-mono text-slate-400 flex items-center justify-between">
-              <span>Patient Sensor Channels: Active</span>
-              <span className="text-blue-400 font-bold">500 Hz Sampling</span>
+            <div className="relative z-10 mt-4 pt-3 border-t border-[#faf6f0]/8 text-[11px] font-mono text-[#c5beaf] flex items-center justify-between">
+              <span>Patient Sensor Sync: Active</span>
+              <span className="text-[#5da283] font-bold">500 Hz Sampling</span>
             </div>
           </div>
 
           {/* ZONE B: REAL-TIME SIGNAL CONDUIT & LOGIC GATE (7 cols) */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#090d16] border border-slate-800 p-5 flex flex-col justify-between shadow-xl">
+          <div className="lg:col-span-7 rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-5 flex flex-col justify-between shadow-xl">
             <div>
               <div className="flex justify-between items-center mb-4">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 flex items-center gap-1.5 font-bold">
-                  <Cpu className="w-3.5 h-3.5 text-blue-400" />
+                <span className="font-mono text-[10px] uppercase tracking-wider text-[#c5beaf] flex items-center gap-1.5 font-bold">
+                  <Cpu className="w-3.5 h-3.5 text-[#e5933a]" />
                   REAL-TIME SIGNAL EVALUATION & LOGIC ENGINE
                 </span>
-                <span className="text-[10px] font-mono text-blue-400">
-                  SEQUENCE: SENSOR → COMPARATOR → GATE → ALARM
+                <span className="text-[10px] font-mono text-[#c5beaf]">
+                  READING → COMPARATOR → AND GATE → ALERT
                 </span>
               </div>
 
               {/* VISUAL SIGNAL CONDUITS & AND GATE DIAGRAM */}
-              <div className="p-4 rounded-xl bg-[#050810] border border-slate-800/90 relative overflow-hidden">
+              <div className="p-4 rounded-xl bg-[#0e1014] border border-[#faf6f0]/8 relative overflow-hidden">
                 <div className="space-y-4">
                   {/* Channel A Signal Wire */}
                   <div className="flex items-center gap-3 font-mono text-xs">
-                    <div className="w-28 text-slate-400 shrink-0">
-                      <div className="text-[10px] uppercase text-cyan-400 font-bold">O₂ Channel</div>
-                      <div className="text-white font-bold">{currentVitals.oxygen}% &lt; 90</div>
+                    <div className="w-28 text-[#c5beaf] shrink-0">
+                      <div className="text-[10px] uppercase text-[#70b896] font-bold">O₂ Reading</div>
+                      <div className="text-[#faf6f0] font-bold">{currentVitals.oxygen}% &lt; 90</div>
                     </div>
 
                     {/* Animated Wire A */}
-                    <div className="flex-1 h-3 rounded-full bg-slate-900 border border-slate-800 relative overflow-hidden">
+                    <div className="flex-1 h-3 rounded-full bg-[#181a20] border border-[#faf6f0]/8 relative overflow-hidden">
                       <div
                         className={`h-full transition-all duration-300 ${
                           isHypoxiaActive
-                            ? 'bg-rose-500 shadow-md shadow-rose-500/80 w-full animate-pulse'
-                            : 'bg-slate-800 w-full'
+                            ? 'bg-[#d96347] shadow-md shadow-[#d96347]/50 w-full animate-pulse'
+                            : 'bg-[#22242d] w-full'
                         }`}
                       />
                     </div>
 
                     <div className={`w-28 text-right font-bold text-xs shrink-0 ${
-                      isHypoxiaActive ? 'text-rose-400 font-black' : 'text-slate-500'
+                      isHypoxiaActive ? 'text-[#d96347] font-black' : 'text-[#c5beaf]'
                     }`}>
                       A = {isHypoxiaActive ? '1 (HIGH)' : '0 (LOW)'}
                     </div>
@@ -730,24 +729,24 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
 
                   {/* Channel B Signal Wire */}
                   <div className="flex items-center gap-3 font-mono text-xs">
-                    <div className="w-28 text-slate-400 shrink-0">
-                      <div className="text-[10px] uppercase text-rose-400 font-bold">ECG Channel</div>
-                      <div className="text-white font-bold">{currentVitals.heartRate} BPM</div>
+                    <div className="w-28 text-[#c5beaf] shrink-0">
+                      <div className="text-[10px] uppercase text-[#d96347] font-bold">HR Reading</div>
+                      <div className="text-[#faf6f0] font-bold">{currentVitals.heartRate} BPM</div>
                     </div>
 
                     {/* Animated Wire B */}
-                    <div className="flex-1 h-3 rounded-full bg-slate-900 border border-slate-800 relative overflow-hidden">
+                    <div className="flex-1 h-3 rounded-full bg-[#181a20] border border-[#faf6f0]/8 relative overflow-hidden">
                       <div
                         className={`h-full transition-all duration-300 ${
                           isCardiacActive
-                            ? 'bg-rose-500 shadow-md shadow-rose-500/80 w-full animate-pulse'
-                            : 'bg-slate-800 w-full'
+                            ? 'bg-[#d96347] shadow-md shadow-[#d96347]/50 w-full animate-pulse'
+                            : 'bg-[#22242d] w-full'
                         }`}
                       />
                     </div>
 
                     <div className={`w-28 text-right font-bold text-xs shrink-0 ${
-                      isCardiacActive ? 'text-rose-400 font-black' : 'text-slate-500'
+                      isCardiacActive ? 'text-[#d96347] font-black' : 'text-[#c5beaf]'
                     }`}>
                       B = {isCardiacActive ? '1 (HIGH)' : '0 (LOW)'}
                     </div>
@@ -756,26 +755,26 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                   {/* Central AND Gate Evaluator Box */}
                   <div className={`p-4 rounded-xl border flex items-center justify-between font-mono transition-all ${
                     isConjunctionAlert
-                      ? 'bg-rose-950/60 border-rose-500 text-white shadow-xl shadow-rose-950/60 animate-pulse'
+                      ? 'bg-[#d96347]/20 border-[#d96347]/70 text-white shadow-xl shadow-[#d96347]/20 animate-pulse'
                       : isWarningAlert
-                      ? 'bg-amber-950/40 border-amber-500/60 text-amber-200'
-                      : 'bg-slate-900 border-slate-800 text-slate-300'
+                      ? 'bg-[#e5933a]/15 border-[#e5933a]/50 text-[#e5933a]'
+                      : 'bg-[#181a20] border-[#faf6f0]/8 text-[#c5beaf]'
                   }`}>
                     <div>
-                      <div className="text-[10px] uppercase font-bold text-slate-400">
+                      <div className="text-[10px] uppercase font-bold text-[#c5beaf]">
                         CONJUNCTION GATE: E = A ∧ B
                       </div>
-                      <div className="text-lg font-black mt-0.5">
+                      <div className="text-lg font-black mt-0.5 text-[#faf6f0]">
                         {isHypoxiaActive ? '1' : '0'} ∧ {isCardiacActive ? '1' : '0'} = {isConjunctionAlert ? '1 (EMERGENCY)' : '0 (QUIESCENT)'}
                       </div>
                     </div>
 
                     <div className={`px-3 py-1.5 rounded-lg text-xs font-black ${
                       isConjunctionAlert
-                        ? 'bg-rose-500 text-white shadow-lg'
+                        ? 'bg-[#d96347] text-white shadow-lg'
                         : isWarningAlert
-                        ? 'bg-amber-500 text-slate-950'
-                        : 'bg-slate-800 text-slate-400'
+                        ? 'bg-[#e5933a] text-[#111215]'
+                        : 'bg-[#1e2027] text-[#c5beaf]'
                     }`}>
                       GATE OUTPUT: {isConjunctionAlert ? 'HIGH (1)' : 'LOW (0)'}
                     </div>
@@ -827,15 +826,15 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             </div>
 
             {/* Bottom Explanatory Footer with SOLVE THE MATH Action */}
-            <div className="mt-5 pt-4 border-t border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
-              <span className="text-slate-400">
+            <div className="mt-5 pt-4 border-t border-[#faf6f0]/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono">
+              <span className="text-[#c5beaf]">
                 Want to examine the mathematical proof for this scenario?
               </span>
               <button
                 onClick={onRevealMath}
-                className="text-blue-400 font-bold hover:text-blue-300 hover:underline flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                className="text-[#d96347] font-bold hover:text-[#e5933a] hover:underline flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
               >
-                <Zap className="w-3.5 h-3.5 fill-blue-400" />
+                <Zap className="w-3.5 h-3.5 fill-[#d96347]" />
                 <span>OPEN IN SOLVE THE MATH</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>

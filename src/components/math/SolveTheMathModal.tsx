@@ -153,26 +153,26 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-[#040812]/92 backdrop-blur-2xl overflow-y-auto animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-[#0c0d10]/95 backdrop-blur-2xl overflow-y-auto animate-in fade-in duration-200">
       {/* Modal Shell */}
-      <div className="relative w-full max-w-6xl bg-[#090d16] border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[96vh]">
+      <div className="relative w-full max-w-6xl bg-[#14161c] border border-[#faf6f0]/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[96vh]">
         
         {/* Top Header Bar */}
-        <div className="px-5 py-4 bg-[#0d121f] border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
+        <div className="px-5 py-4 bg-[#181a20] border-b border-[#faf6f0]/8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-600/30">
+            <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#d96347] to-[#e5933a] text-white shadow-lg shadow-[#d96347]/20">
               <Zap className="w-5 h-5 fill-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-blue-400 font-extrabold">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#d96347] font-extrabold">
                   SOLVE THE MATH • INTERACTIVE SIMULATION LABORATORY
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-950/60 text-blue-300 border border-blue-800/60 font-mono font-bold">
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-[#1e2027] text-[#c5beaf] border border-[#faf6f0]/10 font-mono font-bold">
                   STEP {activeStep} OF 6
                 </span>
               </div>
-              <h2 className="font-display font-black text-lg sm:text-xl text-white tracking-tight">
+              <h2 className="font-display font-black text-lg sm:text-xl text-[#faf6f0] tracking-tight">
                 {stepsList[activeStep - 1].subtitle}
               </h2>
             </div>
@@ -180,20 +180,20 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
 
           {/* Active Patient Telemetry Pill & Back Action */}
           <div className="flex items-center gap-3">
-            <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
-              <span className="text-slate-400">Live Patient:</span>
-              <span className="text-cyan-400 font-bold">SpO₂: {currentOxygen}%</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-rose-400 font-bold">HR: {currentHeartRate} BPM</span>
-              <span className="text-slate-600">|</span>
-              <span className={propE ? 'text-rose-400 font-bold' : 'text-emerald-400 font-bold'}>
+            <div className="hidden md:flex items-center gap-3 px-3.5 py-1.5 rounded-xl bg-[#1e2027] border border-[#faf6f0]/10 text-xs font-mono">
+              <span className="text-[#c5beaf]">Live Patient:</span>
+              <span className="text-[#70b896] font-bold">SpO₂: {currentOxygen}%</span>
+              <span className="text-[#55534f]">|</span>
+              <span className="text-[#d96347] font-bold">HR: {currentHeartRate} BPM</span>
+              <span className="text-[#55534f]">|</span>
+              <span className={propE ? 'text-[#d96347] font-bold' : 'text-[#5da283] font-bold'}>
                 E = {propE ? '1 (EMERGENCY)' : '0 (NORMAL)'}
               </span>
             </div>
 
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-[#1e2027] hover:bg-[#282a33] text-[#c5beaf] hover:text-white border border-[#faf6f0]/10 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer"
               title="Return to Patient Monitor (Esc)"
             >
               <X className="w-4 h-4" />
@@ -203,7 +203,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
         </div>
 
         {/* Step Progression Ribbon */}
-        <div className="px-4 py-2.5 bg-[#070b14] border-b border-slate-800/80 flex items-center gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
+        <div className="px-4 py-2.5 bg-[#101217] border-b border-[#faf6f0]/8 flex items-center gap-1 sm:gap-2 overflow-x-auto scrollbar-none">
           {stepsList.map((step) => {
             const isActive = activeStep === step.num;
             const isCompleted = activeStep > step.num;
@@ -217,19 +217,19 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                 }}
                 className={`flex-1 min-w-[130px] px-3 py-2 rounded-xl text-xs font-mono font-bold transition-all flex items-center justify-between border cursor-pointer ${
                   isActive
-                    ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-600/30'
+                    ? 'bg-[#d96347] text-white border-[#d96347] shadow-md shadow-[#d96347]/25'
                     : isCompleted
-                    ? 'bg-slate-900/80 text-blue-300 border-slate-800 hover:border-slate-700'
-                    : 'bg-slate-900/40 text-slate-400 border-slate-800/60 hover:text-slate-200 hover:bg-slate-900'
+                    ? 'bg-[#181a20] text-[#faf6f0] border-[#faf6f0]/10 hover:border-[#faf6f0]/20'
+                    : 'bg-[#121317] text-[#7a7873] border-transparent hover:text-[#c5beaf] hover:bg-[#181a20]'
                 }`}
               >
                 <div className="text-left truncate">
                   <div className="truncate">{step.name}</div>
-                  <div className={`text-[9px] font-normal truncate ${isActive ? 'text-blue-100' : 'text-slate-500'}`}>
+                  <div className={`text-[9px] font-normal truncate ${isActive ? 'text-white/80' : 'text-[#7a7873]'}`}>
                     {step.subtitle}
                   </div>
                 </div>
-                {isCompleted && <CheckCircle2 className="w-3.5 h-3.5 shrink-0 ml-1 text-emerald-400" />}
+                {isCompleted && <CheckCircle2 className="w-3.5 h-3.5 shrink-0 ml-1 text-[#5da283]" />}
               </button>
             );
           })}
@@ -243,13 +243,13 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
           {activeStep === 1 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="max-w-3xl">
-                <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
-                  STEP 1 — ANALOG TELEMETRY ACQUISITION
+                <div className="text-xs font-mono font-bold text-[#d96347] uppercase tracking-widest">
+                  STEP 1 — SENSOR SIGNAL ACQUISITION
                 </div>
-                <h3 className="font-display font-black text-2xl text-white mt-1">
+                <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
                   Inspect Live Patient Readings & Safety Boundaries
                 </h3>
-                <p className="text-slate-300 text-sm mt-1 leading-relaxed">
+                <p className="text-[#c5beaf] text-sm mt-1 leading-relaxed">
                   Before discrete mathematical propositions can be evaluated, the patient monitor continuously digitizes
                   analog voltages from biological sensors. Each vital sign is measured against calibrated medical thresholds.
                 </p>
@@ -258,33 +258,33 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
               {/* Instruments Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* SpO2 Instrument */}
-                <div className="p-5 rounded-2xl bg-[#0b101c] border border-slate-800 shadow-xl relative overflow-hidden">
+                <div className="p-5 rounded-2xl bg-[#181a22] border border-[#2a2d39] shadow-xl relative overflow-hidden">
                   <div className="flex justify-between items-center mb-4">
-                    <span className="font-mono text-xs text-cyan-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="font-mono text-xs text-[#5da283] font-bold uppercase tracking-wider flex items-center gap-1.5">
                       <Activity className="w-4 h-4" /> PULSE OXIMETER CHANNEL
                     </span>
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300">
-                      LEAD {sensors?.spo2?.leadAttached ? 'ATTACHED (SNR 98%)' : 'ONLINE'}
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#13141a] border border-[#262832] text-[#c5beaf]">
+                      LEAD {sensors?.spo2?.leadAttached ? 'ATTACHED (OPTIMAL)' : 'ONLINE'}
                     </span>
                   </div>
 
                   <div className="flex items-baseline justify-between mb-4">
                     <div>
-                      <div className="text-[10px] font-mono text-slate-400 uppercase">Live Patient Value</div>
-                      <div className="font-mono font-black text-4xl sm:text-5xl text-cyan-400">
+                      <div className="text-[10px] font-mono text-[#9e9788] uppercase">Live Patient Value</div>
+                      <div className="font-mono font-black text-4xl sm:text-5xl text-[#5da283]">
                         {currentOxygen}%
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-[10px] font-mono text-slate-400 uppercase">Critical Threshold</div>
-                      <div className="font-mono font-bold text-xl text-rose-400">&lt; 90%</div>
+                      <div className="text-[10px] font-mono text-[#9e9788] uppercase">Critical Threshold</div>
+                      <div className="font-mono font-bold text-xl text-[#d96347]">&lt; 90%</div>
                     </div>
                   </div>
 
                   {/* Visual Gauge Bar */}
-                  <div className="relative w-full h-8 bg-slate-900 rounded-xl overflow-hidden border border-slate-800 p-1 flex items-center mb-4">
+                  <div className="relative w-full h-8 bg-[#13141a] rounded-xl overflow-hidden border border-[#262832] p-1 flex items-center mb-4">
                     {/* Critical Hypoxia Region (< 90%) */}
-                    <div className="h-full bg-rose-950/60 border-r-2 border-rose-500 flex items-center justify-center" style={{ width: '90%' }}>
+                    <div className="h-full bg-rose-950/60 border-r-2 border-[#d96347] flex items-center justify-center" style={{ width: '90%' }}>
                       <span className="text-[10px] font-mono font-bold text-rose-300">
                         CRITICAL DANGER ZONE (&lt; 90%)
                       </span>
@@ -296,7 +296,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
 
                     {/* Indicator Needle */}
                     <div
-                      className="absolute top-0 bottom-0 w-2 bg-white shadow-lg shadow-cyan-400/80 rounded transition-all duration-300"
+                      className="absolute top-0 bottom-0 w-2 bg-white shadow-lg shadow-[#5da283]/80 rounded transition-all duration-300"
                       style={{ left: `${Math.min(100, Math.max(0, currentOxygen))}%`, transform: 'translateX(-50%)' }}
                     />
                   </div>
@@ -390,8 +390,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
               </div>
 
               {/* Bottom Action */}
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-xs text-slate-400 font-mono">
+              <div className="p-4 rounded-xl bg-[#14161d] border border-[#262832] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-xs text-[#9e9788] font-mono">
                   Continuous analog variables are now evaluated against thresholds and ready for transformation into discrete propositions.
                 </div>
                 <button
@@ -399,7 +399,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     soundEngine.playGateClick();
                     setActiveStep(2);
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-600/30 shrink-0"
+                  className="px-5 py-2.5 rounded-xl bg-[#d96347] hover:bg-[#c8563c] text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-[#d96347]/20 shrink-0"
                 >
                   <span>STEP 2: CONVERT TO PROPOSITIONS</span>
                   <ChevronRight className="w-4 h-4" />
@@ -414,13 +414,13 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
           {activeStep === 2 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="max-w-3xl">
-                <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
+                <div className="text-xs font-mono font-bold text-[#d96347] uppercase tracking-widest">
                   STEP 2 — THE PROPOSITIONAL TRANSFORMATION
                 </div>
-                <h3 className="font-display font-black text-2xl text-white mt-1">
+                <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
                   Relational Comparators to Discrete Boolean Variables
                 </h3>
-                <p className="text-slate-300 text-sm mt-1 leading-relaxed">
+                <p className="text-[#c5beaf] text-sm mt-1 leading-relaxed">
                   In formal logic, an atomic proposition is a declarative statement that is either strictly True (1) or False (0).
                   Watch the continuous physiological metrics pass through relational comparators into digital switches.
                 </p>
@@ -429,29 +429,29 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
               {/* Transformation Pipelines */}
               <div className="space-y-4">
                 {/* Channel A Pipeline */}
-                <div className="p-5 rounded-2xl bg-[#0b101c] border border-slate-800 shadow-xl">
-                  <div className="text-xs font-mono text-cyan-400 font-bold mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                <div className="p-5 rounded-2xl bg-[#181a22] border border-[#2a2d39] shadow-xl">
+                  <div className="text-xs font-mono text-[#5da283] font-bold mb-3 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#5da283]" />
                     CHANNEL A: OXYGEN DESATURATION PROPOSITION
                   </div>
 
                   <div className="flex flex-col md:flex-row items-center gap-3 font-mono">
                     {/* Stage 1: Analog Sensor Value */}
-                    <div className="w-full md:w-1/4 p-4 rounded-xl bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-[10px] text-slate-400 uppercase">Input Sensor</div>
-                      <div className="text-2xl font-black text-cyan-400 mt-1">SpO₂ = {currentOxygen}%</div>
-                      <div className="text-[10px] text-slate-500 mt-1">Continuous Domain [0..100]</div>
+                    <div className="w-full md:w-1/4 p-4 rounded-xl bg-[#13141a] border border-[#262832] text-center">
+                      <div className="text-[10px] text-[#9e9788] uppercase">Input Sensor</div>
+                      <div className="text-2xl font-black text-[#5da283] mt-1">SpO₂ = {currentOxygen}%</div>
+                      <div className="text-[10px] text-[#706c64] mt-1">Continuous Domain [0..100]</div>
                     </div>
 
-                    <ArrowRight className="w-5 h-5 text-slate-500 shrink-0 hidden md:block" />
+                    <ArrowRight className="w-5 h-5 text-stone-600 shrink-0 hidden md:block" />
 
                     {/* Stage 2: Relational Inequality */}
-                    <div className="w-full md:w-1/3 p-4 rounded-xl bg-slate-900 border border-slate-800 text-center">
-                      <div className="text-[10px] text-slate-400 uppercase">Relational Comparator</div>
-                      <div className="text-lg font-bold text-white mt-1">
+                    <div className="w-full md:w-1/3 p-4 rounded-xl bg-[#13141a] border border-[#262832] text-center">
+                      <div className="text-[10px] text-[#9e9788] uppercase">Relational Comparator</div>
+                      <div className="text-lg font-bold text-[#faf6f0] mt-1">
                         P(SpO₂): {currentOxygen} &lt; 90
                       </div>
-                      <div className={`text-xs font-bold mt-1 ${propA ? 'text-rose-400' : 'text-emerald-400'}`}>
+                      <div className={`text-xs font-bold mt-1 ${propA ? 'text-[#d96347]' : 'text-[#5da283]'}`}>
                         Inequality {propA ? 'HOLDS' : 'DOES NOT HOLD'}
                       </div>
                     </div>
@@ -561,7 +561,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     soundEngine.playGateClick();
                     setActiveStep(3);
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2.5 rounded-xl bg-[#d96347] hover:bg-[#c8563c] text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-[#d96347]/20"
                 >
                   <span>STEP 3: PROCESS THE LOGIC</span>
                   <ChevronRight className="w-4 h-4" />
@@ -576,36 +576,36 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
           {activeStep === 3 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="max-w-3xl">
-                <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
+                <div className="text-xs font-mono font-bold text-[#d96347] uppercase tracking-widest">
                   STEP 3 — THE CONJUNCTION LOGIC CIRCUIT
                 </div>
-                <h3 className="font-display font-black text-2xl text-white mt-1">
+                <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
                   Signal Propagation & Gate Activation (E = A ∧ B)
                 </h3>
-                <p className="text-slate-300 text-sm mt-1 leading-relaxed">
+                <p className="text-[#c5beaf] text-sm mt-1 leading-relaxed">
                   Both proposition signals propagate along independent electrical traces into the physical AND gate.
                   The gate output activates if and only if both input lines are simultaneously HIGH (1).
                 </p>
               </div>
 
               {/* Interactive Circuit Canvas / Schematic Display */}
-              <div className="p-6 rounded-2xl bg-[#060a12] border border-slate-800 shadow-2xl relative overflow-hidden">
+              <div className="p-6 rounded-2xl bg-[#14161d] border border-[#262832] shadow-2xl relative overflow-hidden">
                 <div className="flex justify-between items-center mb-4">
-                  <span className="font-mono text-xs text-slate-400 flex items-center gap-2">
-                    <Cpu className="w-4 h-4 text-blue-400" />
+                  <span className="font-mono text-xs text-[#9e9788] flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-[#d96347]" />
                     DIGITAL CONJUNCTION INTERLOCK (E = A ∧ B)
                   </span>
                   <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-lg border ${
                     propE
-                      ? 'bg-rose-950/80 border-rose-500 text-rose-300 animate-pulse'
-                      : 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
+                      ? 'bg-rose-950/80 border-[#d96347] text-rose-300 animate-pulse'
+                      : 'bg-emerald-950/50 border-[#5da283]/40 text-emerald-300'
                   }`}>
                     GATE OUTPUT: {propE ? 'HIGH (+5V) • ENERGIZED' : 'LOW (0V) • DE-ASSERTED'}
                   </span>
                 </div>
 
                 {/* SVG Schematic */}
-                <div className="w-full h-72 sm:h-80 bg-[#090d16] rounded-xl border border-slate-800/90 flex items-center justify-center p-2 relative">
+                <div className="w-full h-72 sm:h-80 bg-[#101217] rounded-xl border border-[#262832] flex items-center justify-center p-2 relative">
                   <svg viewBox="0 0 650 280" className="w-full h-full max-w-2xl select-none">
                     <defs>
                       <filter id="glow-rose" x="-20%" y="-20%" width="140%" height="140%">
@@ -615,7 +615,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                           <feMergeNode in="SourceGraphic" />
                         </feMerge>
                       </filter>
-                      <filter id="glow-blue" x="-20%" y="-20%" width="140%" height="140%">
+                      <filter id="glow-warm" x="-20%" y="-20%" width="140%" height="140%">
                         <feGaussianBlur stdDeviation="3" result="blur" />
                         <feMerge>
                           <feMergeNode in="blur" />
@@ -763,7 +763,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     soundEngine.playGateClick();
                     setActiveStep(4);
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2.5 rounded-xl bg-[#d96347] hover:bg-[#c8563c] text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-[#d96347]/20"
                 >
                   <span>STEP 4: REVEAL TRUTH TABLE</span>
                   <ChevronRight className="w-4 h-4" />
@@ -778,26 +778,26 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
           {activeStep === 4 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="max-w-3xl">
-                <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest">
+                <div className="text-xs font-mono font-bold text-[#d96347] uppercase tracking-widest">
                   STEP 4 — THE EXHAUSTIVE TRUTH TABLE
                 </div>
-                <h3 className="font-display font-black text-2xl text-white mt-1">
+                <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
                   Exhaustive Valuation of All 2² = 4 Possible Interpretations
                 </h3>
-                <p className="text-slate-300 text-sm mt-1 leading-relaxed">
+                <p className="text-[#c5beaf] text-sm mt-1 leading-relaxed">
                   A formal truth table maps every conceivable permutation of input premises.
                   The active row corresponding to the current patient telemetry is illuminated dynamically.
                 </p>
               </div>
 
               {/* Truth Table */}
-              <div className="rounded-2xl bg-[#0b101c] border border-slate-800 shadow-xl overflow-hidden">
-                <div className="p-4 bg-slate-900/80 border-b border-slate-800 flex justify-between items-center">
-                  <span className="font-mono text-xs font-bold text-slate-300 flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-blue-400" />
+              <div className="rounded-2xl bg-[#181a22] border border-[#2a2d39] shadow-xl overflow-hidden">
+                <div className="p-4 bg-[#14161d] border-b border-[#262832] flex justify-between items-center">
+                  <span className="font-mono text-xs font-bold text-[#faf6f0] flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-[#d96347]" />
                     CONJUNCTION TRUTH TABLE: E = A ∧ B
                   </span>
-                  <span className="text-[11px] font-mono text-blue-400">
+                  <span className="text-[11px] font-mono text-[#d96347] font-bold">
                     Active State: Row {(!propA && !propB) ? 1 : (!propA && propB) ? 2 : (propA && !propB) ? 3 : 4}
                   </span>
                 </div>
@@ -853,28 +853,28 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                             key={item.row}
                             className={`transition-all ${
                               isCurrentRow
-                                ? 'bg-blue-600/20 font-bold border-l-4 border-l-blue-400 text-white'
-                                : 'text-slate-400 hover:bg-slate-900/40'
+                                ? 'bg-[#d96347]/20 font-bold border-l-4 border-l-[#d96347] text-[#faf6f0]'
+                                : 'text-[#9e9788] hover:bg-[#14161d]'
                             }`}
                           >
-                            <td className="py-3.5 px-4 font-bold text-slate-300">Row {item.row}</td>
+                            <td className="py-3.5 px-4 font-bold text-[#faf6f0]">Row {item.row}</td>
                             <td className="py-3.5 px-4">
-                              <span className={`px-2 py-0.5 rounded ${item.a ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-slate-800 text-slate-300'}`}>
+                              <span className={`px-2 py-0.5 rounded ${item.a ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-[#1e2029] text-[#c5beaf]'}`}>
                                 {item.a ? '1 (TRUE)' : '0 (FALSE)'}
                               </span>
                             </td>
                             <td className="py-3.5 px-4">
-                              <span className={`px-2 py-0.5 rounded ${item.b ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-slate-800 text-slate-300'}`}>
+                              <span className={`px-2 py-0.5 rounded ${item.b ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-[#1e2029] text-[#c5beaf]'}`}>
                                 {item.b ? '1 (TRUE)' : '0 (FALSE)'}
                               </span>
                             </td>
                             <td className="py-3.5 px-4">
-                              {item.a ? '1' : '0'} ∧ {item.b ? '1' : '0'} = <strong className={item.e ? 'text-rose-400' : 'text-slate-300'}>{item.e ? '1' : '0'}</strong>
+                              {item.a ? '1' : '0'} ∧ {item.b ? '1' : '0'} = <strong className={item.e ? 'text-[#d96347]' : 'text-[#c5beaf]'}>{item.e ? '1' : '0'}</strong>
                             </td>
                             <td className="py-3.5 px-4">
                               <span className={`px-2 py-0.5 rounded font-black ${
                                 item.e
-                                  ? 'bg-rose-500 text-white shadow-sm shadow-rose-500/50'
+                                  ? 'bg-[#d96347] text-white shadow-sm shadow-[#d96347]/50'
                                   : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                               }`}>
                                 E = {item.e ? '1 (CRITICAL)' : '0 (QUIESCENT)'}
@@ -883,12 +883,12 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                             <td className="py-3.5 px-4 text-xs font-normal max-w-xs">{item.meaning}</td>
                             <td className="py-3.5 px-4">
                               {isCurrentRow ? (
-                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500 text-white text-[10px] font-extrabold animate-pulse">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#d96347] text-white text-[10px] font-extrabold animate-pulse">
                                   <span className="w-1.5 h-1.5 rounded-full bg-white" />
                                   CURRENT PATIENT STATE
                                 </span>
                               ) : (
-                                <span className="text-slate-600 text-[11px]">—</span>
+                                <span className="text-[#55524c] text-[11px]">—</span>
                               )}
                             </td>
                           </tr>
@@ -898,24 +898,24 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                   </table>
                 </div>
 
-                <div className="p-4 bg-slate-900/60 border-t border-slate-800 text-xs text-slate-400 font-mono flex items-center justify-between">
+                <div className="p-4 bg-[#14161d] border-t border-[#262832] text-xs text-[#9e9788] font-mono flex items-center justify-between">
                   <div>
-                    Mathematical Valuation: <code className="text-blue-300">v(A ∧ B) = min(v(A), v(B)) = min({propA ? 1 : 0}, {propB ? 1 : 0}) = {propE ? 1 : 0}</code>
+                    Mathematical Valuation: <code className="text-[#e5933a]">v(A ∧ B) = min(v(A), v(B)) = min({propA ? 1 : 0}, {propB ? 1 : 0}) = {propE ? 1 : 0}</code>
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-[#706c64]">
                     Row 4 is the unique satisfying assignment for E = 1.
                   </div>
                 </div>
               </div>
 
               {/* Navigation Actions */}
-              <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[#14161d] border border-[#262832] flex items-center justify-between">
                 <button
                   onClick={() => {
                     soundEngine.playGateClick();
                     setActiveStep(3);
                   }}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs font-bold flex items-center gap-2 cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[#1e2029] hover:bg-[#282b37] text-[#c5beaf] font-mono text-xs font-bold flex items-center gap-2 cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4" />
                   <span>STEP 3</span>
@@ -926,7 +926,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     soundEngine.playGateClick();
                     setActiveStep(5);
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2.5 rounded-xl bg-[#d96347] hover:bg-[#c8563c] text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-[#d96347]/20"
                 >
                   <span>STEP 5: INDEPENDENT SANDBOX</span>
                   <ChevronRight className="w-4 h-4" />
@@ -992,10 +992,10 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                   </div>
 
                   {/* Switch A */}
-                  <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                  <div className="p-4 rounded-xl bg-[#13141a] border border-[#262832]">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="font-mono text-xs font-bold text-cyan-400">PROPOSITION A (Hypoxia)</span>
-                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${sandboxA ? 'bg-rose-950 text-rose-300' : 'bg-slate-800 text-slate-400'}`}>
+                      <span className="font-mono text-xs font-bold text-[#5da283]">PROPOSITION A (Hypoxia)</span>
+                      <span className={`text-[10px] font-mono px-2 py-0.5 rounded ${sandboxA ? 'bg-rose-950 text-rose-300' : 'bg-[#1e2029] text-[#9e9788]'}`}>
                         {sandboxA ? 'ACTIVE (1)' : 'INACTIVE (0)'}
                       </span>
                     </div>
@@ -1081,10 +1081,10 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                           {sandboxB ? 'HIGH (+5V / Logic 1)' : 'LOW (0V / Logic 0)'}
                         </span>
                       </div>
-                      <div className="h-px bg-slate-800" />
+                      <div className="h-px bg-[#262832]" />
                       <div className="flex items-center justify-between">
-                        <span className="text-white font-bold">AND Gate Equation:</span>
-                        <span className="text-blue-300 font-bold">
+                        <span className="text-[#faf6f0] font-bold">AND Gate Equation:</span>
+                        <span className="text-[#e5933a] font-bold">
                           E = {sandboxA ? '1' : '0'} ∧ {sandboxB ? '1' : '0'} = {sandboxOutput ? '1' : '0'}
                         </span>
                       </div>
@@ -1138,7 +1138,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     soundEngine.playGateClick();
                     setActiveStep(6);
                   }}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-blue-600/30"
+                  className="px-5 py-2.5 rounded-xl bg-[#d96347] hover:bg-[#c8563c] text-white font-mono text-xs font-bold tracking-wider uppercase flex items-center gap-2 cursor-pointer shadow-lg shadow-[#d96347]/20"
                 >
                   <span>STEP 6: EXTENDED MATHEMATICS LAB</span>
                   <ChevronRight className="w-4 h-4" />
@@ -1153,21 +1153,21 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
           {activeStep === 6 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div className="max-w-3xl">
-                <div className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-blue-400" />
+                <div className="text-xs font-mono font-bold text-[#d96347] uppercase tracking-widest flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-[#d96347]" />
                   STEP 6 — EXTENDED DISCRETE MATHEMATICS LABORATORY
                 </div>
-                <h3 className="font-display font-black text-2xl text-white mt-1">
+                <h3 className="font-display font-black text-2xl text-[#faf6f0] mt-1">
                   Connectives, De Morgan Dual Circuits, SAT & Predicate Quantifiers
                 </h3>
-                <p className="text-slate-300 text-sm mt-1 leading-relaxed">
+                <p className="text-[#c5beaf] text-sm mt-1 leading-relaxed">
                   Every mathematical pillar of Discrete Mathematics applied to critical embedded safety engineering.
                   Select an interactive experiment below to explore formal proofs through visual interaction.
                 </p>
               </div>
 
               {/* Sub-Tab Navigation */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 border-b border-slate-800 pb-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 border-b border-[#262832] pb-4">
                 {[
                   { id: 'connectives', label: '1. Connectives Lab', icon: <Binary className="w-4 h-4" /> },
                   { id: 'demorgan', label: "2. De Morgan's Dual Circuits", icon: <Equal className="w-4 h-4" /> },
@@ -1182,8 +1182,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     }}
                     className={`p-3 rounded-xl font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 border cursor-pointer ${
                       subTab === tab.id
-                        ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-600/30'
-                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                        ? 'bg-[#d96347] text-white border-[#d96347] shadow-md shadow-[#d96347]/30'
+                        : 'bg-[#181a22] border-[#262832] text-[#c5beaf] hover:border-[#383c4a]'
                     }`}
                   >
                     {tab.icon}
@@ -1207,8 +1207,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all cursor-pointer ${
                           selectedConn === op
-                            ? 'bg-blue-600 text-white border-blue-400'
-                            : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                            ? 'bg-[#d96347] text-white border-[#d96347]'
+                            : 'bg-[#181a22] border-[#262832] text-[#9e9788] hover:text-[#faf6f0]'
                         }`}
                       >
                         {op === 'AND' && '∧ AND'}
@@ -1224,18 +1224,18 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-5 p-5 rounded-2xl bg-[#0b101c] border border-slate-800 space-y-4">
-                      <div className="text-xs font-mono text-slate-400 font-bold uppercase">INPUT SIGNALS</div>
+                    <div className="md:col-span-5 p-5 rounded-2xl bg-[#181a22] border border-[#262832] space-y-4">
+                      <div className="text-xs font-mono text-[#9e9788] font-bold uppercase">INPUT SIGNALS</div>
                       
-                      <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800">
-                        <span className="font-mono text-xs font-bold text-cyan-400">Proposition P</span>
+                      <div className="flex items-center justify-between p-3 rounded-xl bg-[#13141a] border border-[#262832]">
+                        <span className="font-mono text-xs font-bold text-[#5da283]">Proposition P</span>
                         <button
                           onClick={() => {
                             soundEngine.playGateClick();
                             setConnP(!connP);
                           }}
                           className={`px-3 py-1 rounded-lg font-mono text-xs font-bold ${
-                            connP ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
+                            connP ? 'bg-[#5da283] text-stone-950 font-bold' : 'bg-[#20232c] text-[#9e9788]'
                           }`}
                         >
                           {connP ? 'TRUE (1)' : 'FALSE (0)'}
@@ -1281,7 +1281,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                           <span className="text-rose-400">0 (FALSE)</span>
                         )}
                       </div>
-                      <div className="mt-4 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 font-mono text-sm text-blue-300">
+                      <div className="mt-4 px-4 py-2 rounded-xl bg-[#13141a] border border-[#262832] font-mono text-sm text-[#e5933a]">
                         {selectedConn === 'NOT' ? (
                           <span>¬({connP ? '1' : '0'}) = {connOutput ? '1' : '0'}</span>
                         ) : (
@@ -1307,8 +1307,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all cursor-pointer ${
                           selectedDeMorganLaw === 'law1'
-                            ? 'bg-blue-600 text-white border-blue-400'
-                            : 'bg-slate-900 border-slate-800 text-slate-400'
+                            ? 'bg-[#d96347] text-white border-[#d96347]'
+                            : 'bg-[#181a22] border-[#262832] text-[#9e9788]'
                         }`}
                       >
                         Law 1: ¬(A ∨ B) ≡ (¬A) ∧ (¬B)
@@ -1321,8 +1321,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all cursor-pointer ${
                           selectedDeMorganLaw === 'law2'
-                            ? 'bg-blue-600 text-white border-blue-400'
-                            : 'bg-slate-900 border-slate-800 text-slate-400'
+                            ? 'bg-[#d96347] text-white border-[#d96347]'
+                            : 'bg-[#181a22] border-[#262832] text-[#9e9788]'
                         }`}
                       >
                         Law 2: ¬(A ∧ B) ≡ (¬A) ∨ (¬B)
@@ -1337,7 +1337,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                           setDmA(!dmA);
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border ${
-                          dmA ? 'bg-cyan-600 text-white border-cyan-400' : 'bg-slate-900 text-slate-400 border-slate-800'
+                          dmA ? 'bg-[#5da283] text-stone-950 font-bold border-[#5da283]' : 'bg-[#181a22] text-[#9e9788] border-[#262832]'
                         }`}
                       >
                         Input A: {dmA ? '1' : '0'}
@@ -1348,7 +1348,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                           setDmB(!dmB);
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border ${
-                          dmB ? 'bg-rose-600 text-white border-rose-400' : 'bg-slate-900 text-slate-400 border-slate-800'
+                          dmB ? 'bg-rose-600 text-white border-rose-400' : 'bg-[#181a22] text-[#9e9788] border-[#262832]'
                         }`}
                       >
                         Input B: {dmB ? '1' : '0'}
@@ -1364,8 +1364,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     return (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Circuit 1 (LHS) */}
-                        <div className="p-5 rounded-2xl bg-[#0b101c] border border-slate-800 shadow-xl">
-                          <div className="text-xs font-mono font-bold text-blue-400 mb-2">
+                        <div className="p-5 rounded-2xl bg-[#181a22] border border-[#262832] shadow-xl">
+                          <div className="text-xs font-mono font-bold text-[#d96347] mb-2">
                             CIRCUIT 1: LEFT-HAND FORMULA
                           </div>
                           <div className="font-mono text-lg font-extrabold text-white mb-4">
@@ -1451,8 +1451,8 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         }}
                         className={`px-3 py-1.5 rounded-lg font-mono text-xs font-bold border transition-all cursor-pointer ${
                           selectedFormula === f.id
-                            ? 'bg-blue-600 text-white border-blue-400'
-                            : 'bg-slate-900 border-slate-800 text-slate-400'
+                            ? 'bg-[#d96347] text-white border-[#d96347]'
+                            : 'bg-[#181a22] border-[#262832] text-[#9e9788]'
                         }`}
                       >
                         {f.label}
@@ -1460,15 +1460,15 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     ))}
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-[#0b101c] border border-slate-800 shadow-xl font-mono text-xs space-y-4">
+                  <div className="p-5 rounded-2xl bg-[#181a22] border border-[#262832] shadow-xl font-mono text-xs space-y-4">
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-white text-sm">
+                      <span className="font-bold text-[#faf6f0] text-sm">
                         {selectedFormula === 'safety_invariant' && 'ICU SAFETY INVARIANT: (A ∧ B) → E'}
                         {selectedFormula === 'tautology' && 'LAW OF EXCLUDED MIDDLE: P ∨ ¬P'}
                         {selectedFormula === 'contradiction' && 'LOGICAL IMPOSSIBILITY: P ∧ ¬P'}
                         {selectedFormula === 'contingent' && 'CONTINGENCY: A ∧ (B ∨ ¬C)'}
                       </span>
-                      <span className="px-2.5 py-1 rounded bg-blue-950 text-blue-300 border border-blue-800 font-bold">
+                      <span className="px-2.5 py-1 rounded bg-[#2a1b18] text-[#f09a82] border border-[#d96347]/40 font-bold">
                         {selectedFormula === 'safety_invariant' && 'TAUTOLOGY (VALID IN ALL STATES)'}
                         {selectedFormula === 'tautology' && 'TAUTOLOGY (100% TRUE)'}
                         {selectedFormula === 'contradiction' && 'UNSATISFIABLE (100% FALSE)'}
@@ -1476,7 +1476,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                       </span>
                     </div>
 
-                    <p className="text-slate-300 text-xs leading-relaxed font-sans">
+                    <p className="text-[#c5beaf] text-xs leading-relaxed font-sans">
                       {selectedFormula === 'safety_invariant' &&
                         'In life-critical medical equipment, safety rules must be tautologies: under every interpretation of sensor inputs, if the physiological condition is met, the emergency response is guaranteed by formal deduction.'}
                       {selectedFormula === 'tautology' &&
@@ -1497,10 +1497,10 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                 <div className="space-y-6 animate-in fade-in duration-200">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <div className="text-xs font-mono font-bold text-slate-400 uppercase">
+                      <div className="text-xs font-mono font-bold text-[#9e9788] uppercase">
                         PREDICATE LOGIC OVER HOSPITAL WARDS: DOMAIN U = &#123;Bed₁, Bed₂, Bed₃, Bed₄, Bed₅, Bed₆&#125;
                       </div>
-                      <div className="text-xs text-slate-400 mt-1">
+                      <div className="text-xs text-[#9e9788] mt-1">
                         Click any bed to toggle between Stable and Critical state. Watch the quantifiers evaluate!
                       </div>
                     </div>
@@ -1510,7 +1510,7 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         soundEngine.playGateClick();
                         setBeds((prev) => prev.map((b) => ({ ...b, isCritical: false, hr: 74, spo2: 98, temp: 36.8 })));
                       }}
-                      className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-300 hover:text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shrink-0"
+                      className="px-3.5 py-1.5 rounded-xl bg-[#14161d] border border-[#262832] text-[#c5beaf] hover:text-white font-mono text-xs font-bold flex items-center gap-1.5 cursor-pointer shrink-0"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>RESET ALL BEDS TO STABLE</span>
@@ -1526,20 +1526,20 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                         className={`p-3 rounded-2xl border text-left font-mono transition-all cursor-pointer ${
                           bed.isCritical
                             ? 'bg-rose-950/60 border-rose-500 shadow-lg shadow-rose-950/50'
-                            : 'bg-[#0b101c] border-slate-800 hover:border-slate-700'
+                            : 'bg-[#181a22] border-[#262832] hover:border-stone-600'
                         }`}
                       >
                         <div className="flex justify-between items-center mb-1">
                           <span className="text-[11px] font-bold text-white">{bed.name.split(' ')[0]}</span>
                           <span className={`w-2 h-2 rounded-full ${bed.isCritical ? 'bg-rose-400 animate-ping' : 'bg-emerald-400'}`} />
                         </div>
-                        <div className="text-[10px] text-slate-400 mb-2 truncate">{bed.name}</div>
+                        <div className="text-[10px] text-[#9e9788] mb-2 truncate">{bed.name}</div>
                         <div className="text-[10px] space-y-0.5">
-                          <div>HR: <strong className={bed.isCritical ? 'text-rose-300' : 'text-slate-300'}>{bed.hr}</strong></div>
-                          <div>SpO₂: <strong className={bed.isCritical ? 'text-rose-300' : 'text-cyan-300'}>{bed.spo2}%</strong></div>
+                          <div>HR: <strong className={bed.isCritical ? 'text-rose-300' : 'text-[#c5beaf]'}>{bed.hr}</strong></div>
+                          <div>SpO₂: <strong className={bed.isCritical ? 'text-rose-300' : 'text-[#5da283]'}>{bed.spo2}%</strong></div>
                         </div>
                         <div className={`mt-2 py-0.5 text-center rounded text-[9px] font-bold ${
-                          bed.isCritical ? 'bg-rose-500 text-white' : 'bg-slate-800 text-emerald-400'
+                          bed.isCritical ? 'bg-rose-500 text-white' : 'bg-[#1e2029] text-emerald-400'
                         }`}>
                           {bed.isCritical ? 'CRITICAL (1)' : 'STABLE (0)'}
                         </div>
@@ -1550,12 +1550,12 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                   {/* Quantifier Mathematical Calculations */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Universal Quantifier (∀) */}
-                    <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs">
-                      <div className="text-slate-400 uppercase text-[10px] font-bold">UNIVERSAL QUANTIFIER</div>
-                      <div className="text-base font-black text-white mt-1">
+                    <div className="p-4 rounded-xl bg-[#181a22] border border-[#262832] font-mono text-xs">
+                      <div className="text-[#9e9788] uppercase text-[10px] font-bold">UNIVERSAL QUANTIFIER</div>
+                      <div className="text-base font-black text-[#faf6f0] mt-1">
                         ∀x Stable(x) : Are ALL beds stable?
                       </div>
-                      <div className="mt-2 text-slate-300 text-[11px]">
+                      <div className="mt-2 text-[#c5beaf] text-[11px]">
                         Evaluates to TRUE if and only if EVERY bed in the ward is non-critical.
                       </div>
                       <div className={`mt-3 py-1.5 px-3 rounded-lg font-bold text-center ${
@@ -1568,17 +1568,17 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                     </div>
 
                     {/* Existential Quantifier (∃) */}
-                    <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs">
-                      <div className="text-slate-400 uppercase text-[10px] font-bold">EXISTENTIAL QUANTIFIER</div>
-                      <div className="text-base font-black text-white mt-1">
+                    <div className="p-4 rounded-xl bg-[#181a22] border border-[#262832] font-mono text-xs">
+                      <div className="text-[#9e9788] uppercase text-[10px] font-bold">EXISTENTIAL QUANTIFIER</div>
+                      <div className="text-base font-black text-[#faf6f0] mt-1">
                         ∃x Critical(x) : Does THERE EXIST a critical bed?
                       </div>
-                      <div className="mt-2 text-slate-300 text-[11px]">
+                      <div className="mt-2 text-[#c5beaf] text-[11px]">
                         Evaluates to TRUE if AT LEAST ONE bed requires immediate emergency intervention.
                       </div>
                       <div className={`mt-3 py-1.5 px-3 rounded-lg font-bold text-center ${
                         someCritical
-                          ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30'
+                          ? 'bg-[#d96347] text-white shadow-md shadow-[#d96347]/30'
                           : 'bg-emerald-950 text-emerald-300 border border-emerald-800'
                       }`}>
                         ∃x Critical(x) = {someCritical ? `TRUE (1) — ${criticalBeds.length} BED(S) REQUIRE RESCUE` : 'FALSE (0) — NO CRITICAL BEDS'}
@@ -1587,11 +1587,11 @@ export const SolveTheMathModal: React.FC<SolveTheMathModalProps> = ({
                   </div>
 
                   {/* De Morgan for Quantifiers Banner */}
-                  <div className="p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/60 font-mono text-xs text-blue-300 flex items-center justify-between">
+                  <div className="p-3.5 rounded-xl bg-[#181a22] border border-[#d96347]/30 font-mono text-xs text-[#faf6f0] flex items-center justify-between">
                     <div>
-                      <strong>QUANTIFIER DUALITY:</strong> ¬(∀x Stable(x)) ≡ ∃x ¬Stable(x)
+                      <strong className="text-[#d96347]">QUANTIFIER DUALITY:</strong> ¬(∀x Stable(x)) ≡ ∃x ¬Stable(x)
                     </div>
-                    <div className="text-[11px] text-slate-400 hidden sm:inline">
+                    <div className="text-[11px] text-[#9e9788] hidden sm:inline">
                       Denying that all beds are stable is logically equivalent to stating at least one bed is unstable.
                     </div>
                   </div>

@@ -46,67 +46,67 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
   // Status evaluations
   const getHrStatus = () => {
     if (!sensors.ecg.leadAttached) {
-      return { label: 'LEAD OFF', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'LEAD DETACHED', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.heartRate > THRESHOLDS.HEART_RATE_CRITICAL_MAX) {
-      return { label: 'TACHYCARDIA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'HIGH HEART RATE', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
     if (vitals.heartRate < THRESHOLDS.HEART_RATE_CRITICAL_MIN) {
-      return { label: 'BRADYCARDIA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'LOW HEART RATE', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
-    return { label: 'NORMAL SINUS', color: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-950/20' };
+    return { label: 'NORMAL HEART RATE', color: 'text-[#5da283]', border: 'border-[#5da283]/30', bg: 'bg-[#5da283]/10' };
   };
 
   const getSpo2Status = () => {
     if (!sensors.spo2.leadAttached) {
-      return { label: 'PROBE DETACHED', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'PROBE DETACHED', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.oxygen < THRESHOLDS.OXYGEN_CRITICAL_MIN) {
-      return { label: 'CRITICAL HYPOXIA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'LOW OXYGEN (< 90%)', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
     if (vitals.oxygen < 94) {
-      return { label: 'LOW WARNING', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'MILD DROP WARNING', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
-    return { label: 'OPTIMAL SAT', color: 'text-cyan-400', border: 'border-cyan-500/30', bg: 'bg-cyan-950/20' };
+    return { label: 'NORMAL OXYGEN LEVEL', color: 'text-[#5da283]', border: 'border-[#5da283]/30', bg: 'bg-[#5da283]/10' };
   };
 
   const getTempStatus = () => {
     if (!sensors.temp.leadAttached) {
-      return { label: 'PROBE OFF', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'PROBE DETACHED', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.temperature > THRESHOLDS.TEMP_CRITICAL_MAX) {
-      return { label: 'HYPERPYREXIA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'HIGH FEVER (> 39°C)', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
     if (vitals.temperature > 37.8) {
-      return { label: 'ELEVATED FEVER', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'ELEVATED TEMP', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
-    return { label: 'NORMOTHERMIC', color: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-950/20' };
+    return { label: 'NORMAL TEMPERATURE', color: 'text-[#5da283]', border: 'border-[#5da283]/30', bg: 'bg-[#5da283]/10' };
   };
 
   const getBpStatus = () => {
     if (!sensors.nibp.leadAttached) {
-      return { label: 'CUFF OFF', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'CUFF DETACHED', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.bloodPressureSystolic > THRESHOLDS.BP_SYSTOLIC_CRITICAL_MAX) {
-      return { label: 'HYPERTENSION', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'HIGH BLOOD PRESSURE', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.bloodPressureSystolic < THRESHOLDS.BP_SYSTOLIC_CRITICAL_MIN) {
-      return { label: 'HYPOTENSION', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'LOW BLOOD PRESSURE', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
-    return { label: 'NORMOTENSIVE', color: 'text-blue-400', border: 'border-blue-500/30', bg: 'bg-blue-950/20' };
+    return { label: 'NORMAL PRESSURE', color: 'text-[#5da283]', border: 'border-[#5da283]/30', bg: 'bg-[#5da283]/10' };
   };
 
   const getRespStatus = () => {
     if (!sensors.resp.leadAttached) {
-      return { label: 'CANNULA OFF', color: 'text-amber-400', border: 'border-amber-500/40', bg: 'bg-amber-950/20' };
+      return { label: 'CANNULA DETACHED', color: 'text-[#e5933a]', border: 'border-[#e5933a]/40', bg: 'bg-[#e5933a]/10' };
     }
     if (vitals.respiratoryRate > THRESHOLDS.RESPIRATORY_CRITICAL_MAX) {
-      return { label: 'TACHYPNEA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'RAPID BREATHING', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
     if (vitals.respiratoryRate < THRESHOLDS.RESPIRATORY_CRITICAL_MIN) {
-      return { label: 'BRADYPNEA', color: 'text-rose-400', border: 'border-rose-500/50', bg: 'bg-rose-950/40' };
+      return { label: 'SLOW BREATHING', color: 'text-[#d96347]', border: 'border-[#d96347]/50', bg: 'bg-[#d96347]/15' };
     }
-    return { label: 'EUPNEA NORMAL', color: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-950/20' };
+    return { label: 'NORMAL BREATHING', color: 'text-[#5da283]', border: 'border-[#5da283]/30', bg: 'bg-[#5da283]/10' };
   };
 
   const hrStatus = getHrStatus();
@@ -123,18 +123,17 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
     <section id="patient-monitor" className="relative w-full py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       
       {/* SECTION TITLE & CLINICAL CONTEXT */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-6 border-b border-white/8">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 pb-6 border-b border-[#faf6f0]/8">
         <div>
-          <div className="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase tracking-widest mb-2 font-bold">
-            <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
-            <span>CLINICAL MONITORING ENGINE • MULTI-PARAMETER TELEMETRY</span>
+          <div className="flex items-center gap-2 text-[#d96347] font-mono text-xs uppercase tracking-widest mb-2 font-bold">
+            <Activity className="w-4 h-4 text-[#5da283] animate-pulse" />
+            <span>LIVE PATIENT SIMULATION • MULTI-PARAMETER MONITOR</span>
           </div>
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">
-            PATIENT TELEMETRY HARNESS
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-[#faf6f0] tracking-tight">
+            BEDSIDE PATIENT MONITOR
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-2xl font-light">
-            Continuous analog biological voltages are sampled at 500 Hz, conditioned, and digitized into
-            relational inequalities before discrete Boolean evaluation.
+          <p className="text-[#c5beaf] text-sm sm:text-base mt-2 max-w-2xl font-light">
+            Continuous physiological signals are sampled in real time. Discrete mathematical checks ensure that emergency alerts trigger only when genuine medical distress occurs.
           </p>
         </div>
 
@@ -146,8 +145,8 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
             }}
             className={`px-4 py-2.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-2 cursor-pointer ${
               showManualControls
-                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30 border border-blue-400'
-                : 'bg-slate-900/80 border border-white/10 text-slate-300 hover:border-white/20 hover:text-white'
+                ? 'bg-[#d96347] text-white shadow-lg shadow-[#d96347]/30 border border-[#d96347]'
+                : 'bg-[#181a20] border border-[#faf6f0]/10 text-[#c5beaf] hover:border-[#faf6f0]/25 hover:text-white'
             }`}
           >
             <Sliders className="w-4 h-4" />
@@ -156,7 +155,7 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
 
           <button
             onClick={onRevealMath}
-            className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-all flex items-center gap-2 bg-gradient-to-r from-[#d96347] to-[#e5933a] hover:from-[#e06d53] hover:to-[#efa347] text-white shadow-lg shadow-[#d96347]/25 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <Zap className="w-4 h-4 fill-white" />
             <span>SOLVE THE MATH</span>
@@ -165,44 +164,44 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
       </div>
 
       {/* PATIENT PROFILE HEADER CARD */}
-      <div className="rounded-3xl bg-[#090e1a]/90 border border-white/10 p-5 sm:p-6 mb-8 relative overflow-hidden shadow-2xl backdrop-blur-xl">
+      <div className="rounded-3xl bg-[#171920]/90 border border-[#faf6f0]/10 p-5 sm:p-6 mb-8 relative overflow-hidden shadow-2xl backdrop-blur-xl">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           
           {/* Patient Details */}
           <div className="flex items-center gap-4 sm:gap-5">
             <div className="relative">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-900/60 to-indigo-900/60 border border-blue-500/30 flex items-center justify-center text-blue-400 shadow-xl">
-                <Activity className="w-7 h-7 text-blue-400 animate-pulse" />
+              <div className="w-14 h-14 rounded-2xl bg-[#1e2027] border border-[#faf6f0]/15 flex items-center justify-center text-[#d96347] shadow-xl">
+                <Activity className="w-7 h-7 text-[#d96347] animate-pulse" />
               </div>
-              <span className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#090e1a] ${
+              <span className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-[#171920] ${
                 systemStatus === 'CRITICAL_EMERGENCY'
-                  ? 'bg-rose-500 animate-ping'
+                  ? 'bg-[#d96347] animate-ping'
                   : systemStatus === 'WARNING' || systemStatus === 'SENSOR_FAULT'
-                  ? 'bg-amber-400 animate-pulse'
-                  : 'bg-emerald-500'
+                  ? 'bg-[#e5933a] animate-pulse'
+                  : 'bg-[#5da283]'
               }`} />
             </div>
 
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <h3 className="font-display font-black text-xl sm:text-2xl text-white tracking-wide">
-                  PATIENT ID: #ICU-8820-DX
+                <h3 className="font-display font-black text-xl sm:text-2xl text-[#faf6f0] tracking-wide">
+                  PATIENT ID: #ICU-8820
                 </h3>
-                <span className="text-xs px-3 py-1 rounded-full bg-blue-950/80 border border-blue-500/30 text-blue-300 font-mono font-bold">
-                  BAY 04 • NEURO-TRAUMA ICU
+                <span className="text-xs px-3 py-1 rounded-full bg-[#1e2027] border border-[#faf6f0]/10 text-[#5da283] font-mono font-bold">
+                  BED 04 • INTENSIVE CARE
                 </span>
-                <span className="text-xs px-3 py-1 rounded-full bg-slate-900/90 text-slate-300 font-mono border border-white/8">
-                  46 M • INVASIVE TELEMETRY
+                <span className="text-xs px-3 py-1 rounded-full bg-[#14151b] text-[#c5beaf] font-mono border border-[#faf6f0]/8">
+                  5 CONNECTED CHANNELS
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-2 font-mono flex items-center gap-2 flex-wrap">
-                <span className="text-emerald-400 flex items-center gap-1 font-bold">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> 5-CHANNEL DECOUPLED HARNESS
+              <p className="text-xs text-[#c5beaf] mt-2 font-mono flex items-center gap-2 flex-wrap">
+                <span className="text-[#5da283] flex items-center gap-1 font-bold">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> CONTINUOUS SYNCHRONIZATION
                 </span>
-                <span className="text-slate-600">•</span>
-                <span>SAMPLING: 500 Hz SYNCHRONOUS</span>
-                <span className="text-slate-600">•</span>
-                <span className="text-blue-400 font-bold">SAFETY INTERLOCK: ARMED</span>
+                <span className="text-[#55534f]">•</span>
+                <span>SAMPLING: 500 Hz</span>
+                <span className="text-[#55534f]">•</span>
+                <span className="text-[#e5933a] font-bold">LOGIC ENGINE: ACTIVE</span>
               </p>
             </div>
           </div>
@@ -210,28 +209,28 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           {/* Real-time System Status Callout */}
           <div className="flex items-center gap-3">
             <div className="text-right font-mono text-xs hidden sm:block">
-              <div className="text-slate-400 uppercase text-[10px] font-bold">Current Interlock State</div>
-              <div className="font-black text-sm text-white">
+              <div className="text-[#c5beaf] uppercase text-[10px] font-bold">System Status</div>
+              <div className="font-black text-sm text-[#faf6f0]">
                 {systemStatus === 'CRITICAL_EMERGENCY' ? (
-                  <span className="text-rose-400">TRIPPED (CODE RED)</span>
+                  <span className="text-[#d96347]">EMERGENCY (CODE RED)</span>
                 ) : systemStatus === 'WARNING' ? (
-                  <span className="text-amber-400">ADVISORY (W=1)</span>
+                  <span className="text-[#e5933a]">WARNING (W = 1)</span>
                 ) : systemStatus === 'SENSOR_FAULT' ? (
-                  <span className="text-yellow-400">LEAD FAULT ISOLATED</span>
+                  <span className="text-[#e5933a]">SENSOR DISCONNECTED</span>
                 ) : (
-                  <span className="text-emerald-400">SECURE (HOMEOSTASIS)</span>
+                  <span className="text-[#5da283]">STABLE (NORMAL)</span>
                 )}
               </div>
             </div>
 
             <div className={`p-3 rounded-2xl border ${
               systemStatus === 'CRITICAL_EMERGENCY'
-                ? 'bg-rose-500/20 border-rose-500/60 text-rose-300 animate-beacon'
+                ? 'bg-[#d96347]/20 border-[#d96347]/60 text-[#d96347] animate-beacon'
                 : systemStatus === 'WARNING'
-                ? 'bg-amber-500/20 border-amber-500/60 text-amber-300'
+                ? 'bg-[#e5933a]/20 border-[#e5933a]/60 text-[#e5933a]'
                 : systemStatus === 'SENSOR_FAULT'
-                ? 'bg-yellow-500/20 border-yellow-500/60 text-yellow-300'
-                : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300'
+                ? 'bg-[#e5933a]/20 border-[#e5933a]/60 text-[#e5933a]'
+                : 'bg-[#5da283]/15 border-[#5da283]/40 text-[#5da283]'
             }`}>
               {systemStatus === 'CRITICAL_EMERGENCY' ? (
                 <AlertOctagon className="w-6 h-6 animate-pulse" />
@@ -240,7 +239,7 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
               ) : systemStatus === 'SENSOR_FAULT' ? (
                 <Radio className="w-6 h-6" />
               ) : (
-                <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                <CheckCircle2 className="w-6 h-6 text-[#5da283]" />
               )}
             </div>
           </div>
@@ -374,26 +373,26 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
       </div>
 
       {/* INDEPENDENT SENSOR HARDWARE HARNESS DOCK */}
-      <div className="rounded-3xl bg-[#070b14] border border-white/10 p-5 sm:p-6 mb-8 relative overflow-hidden shadow-2xl group">
+      <div className="rounded-3xl bg-[#14161c] border border-[#faf6f0]/10 p-5 sm:p-6 mb-8 relative overflow-hidden shadow-2xl group">
         {/* Subtle Clinical Sensor Array Background Asset */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-15 mix-blend-luminosity pointer-events-none transition-transform duration-700 group-hover:scale-105"
-          style={{ backgroundImage: `url('${import.meta.env.BASE_URL}sensors-array.jpg')` }}
+          style={{ backgroundImage: `url('${import.meta.env.BASE_URL}warm-telemetry.jpg')` }}
         />
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 text-xs font-mono">
           <div className="flex items-center gap-2">
-            <Radio className="w-4 h-4 text-blue-400" />
-            <span className="text-white font-black tracking-wider uppercase">INDEPENDENT SENSOR CHANNEL HARNESS</span>
-            <span className="text-slate-500 hidden md:inline">• Click ON/OFF to test physical open-circuit fault isolation</span>
+            <Radio className="w-4 h-4 text-[#e5933a]" />
+            <span className="text-[#faf6f0] font-black tracking-wider uppercase">INDEPENDENT SENSOR CHANNELS</span>
+            <span className="text-[#c5beaf] hidden md:inline">• Click to disconnect a sensor and observe fault isolation</span>
           </div>
           <span className="text-[11px] font-bold">
             {sensors.ecg.leadAttached && sensors.spo2.leadAttached ? (
-              <span className="text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="w-3.5 h-3.5" /> ALL 5 LEADS ATTACHED
+              <span className="text-[#5da283] flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" /> ALL 5 SENSORS CONNECTED
               </span>
             ) : (
-              <span className="text-amber-400 flex items-center gap-1 animate-pulse">
-                <AlertTriangle className="w-3.5 h-3.5" /> LEAD DETACHED — FAULT ISOLATED
+              <span className="text-[#e5933a] flex items-center gap-1 animate-pulse">
+                <AlertTriangle className="w-3.5 h-3.5" /> SENSOR DISCONNECTED — FAULT ISOLATED
               </span>
             )}
           </span>
@@ -409,12 +408,12 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
                 key={channelId}
                 className={`p-4 rounded-2xl border transition-all ${
                   isOnline
-                    ? 'bg-[#0d1424]/90 border-white/10 hover:border-white/20'
-                    : 'bg-amber-950/20 border-amber-500/50 shadow-md'
+                    ? 'bg-[#181a20]/90 border-[#faf6f0]/10 hover:border-[#faf6f0]/20'
+                    : 'bg-[#e5933a]/15 border-[#e5933a]/50 shadow-md'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="font-mono text-xs font-black uppercase text-slate-300 truncate">
+                  <span className="font-mono text-xs font-black uppercase text-[#faf6f0] truncate">
                     {ch.label}
                   </span>
                   <button
@@ -424,8 +423,8 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
                     }}
                     className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-extrabold transition-all flex items-center gap-1 cursor-pointer ${
                       isOnline
-                        ? 'bg-slate-800/90 text-slate-300 hover:bg-rose-900/60 hover:text-white border border-white/10'
-                        : 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/30'
+                        ? 'bg-[#1e2027] text-[#c5beaf] hover:bg-[#d96347] hover:text-white border border-[#faf6f0]/10'
+                        : 'bg-[#e5933a] text-[#111215] shadow-md shadow-[#e5933a]/30'
                     }`}
                     title={isOnline ? 'Disconnect Lead' : 'Reconnect Lead'}
                   >
@@ -464,17 +463,17 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
         <div className="lg:col-span-7 flex flex-col gap-4">
           
           {/* Waveform 1: Lead II ECG */}
-          <div className="rounded-2xl bg-[#050811] border border-white/10 p-3.5 shadow-xl relative overflow-hidden">
-            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-white/5 mb-1">
+          <div className="rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-3.5 shadow-xl relative overflow-hidden">
+            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-[#faf6f0]/8 mb-1">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm" />
-                <span className="font-mono font-bold text-white text-[11px]">ELECTROCARDIOGRAM (LEAD II)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#5da283] shadow-sm" />
+                <span className="font-mono font-bold text-[#faf6f0] text-[11px]">HEART RHYTHM • LEAD II (ECG)</span>
               </div>
               <span className="font-mono text-[11px]">
                 {propositions.B ? (
-                  <span className="text-rose-400 font-extrabold animate-pulse">PROPOSITION B = 1 (ABNORMAL)</span>
+                  <span className="text-[#d96347] font-extrabold animate-pulse">CONDITION B = 1 (ABNORMAL)</span>
                 ) : (
-                  <span className="text-emerald-400 font-bold">PROPOSITION B = 0 (NORMAL)</span>
+                  <span className="text-[#5da283] font-bold">CONDITION B = 0 (NORMAL)</span>
                 )}
               </span>
             </div>
@@ -482,8 +481,8 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
               type="ecg"
               bpm={vitals.heartRate}
               oxygen={vitals.oxygen}
-              color="#10b981"
-              glowColor="rgba(16, 185, 129, 0.4)"
+              color="#5da283"
+              glowColor="rgba(93, 162, 131, 0.4)"
               label="LEAD II • ECG"
               sublabel="500 Hz Calibration"
               height={100}
@@ -494,17 +493,17 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           </div>
 
           {/* Waveform 2: Plethysmogram (SpO2) */}
-          <div className="rounded-2xl bg-[#050811] border border-white/10 p-3.5 shadow-xl relative overflow-hidden">
-            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-white/5 mb-1">
+          <div className="rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-3.5 shadow-xl relative overflow-hidden">
+            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-[#faf6f0]/8 mb-1">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-sm" />
-                <span className="font-mono font-bold text-white text-[11px]">PHOTOPLETHYSMOGRAPHY (SpO₂)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#70b896] shadow-sm" />
+                <span className="font-mono font-bold text-[#faf6f0] text-[11px]">OXYGEN PULSE • PLETH (SpO₂)</span>
               </div>
               <span className="font-mono text-[11px]">
                 {propositions.A ? (
-                  <span className="text-rose-400 font-extrabold animate-pulse">PROPOSITION A = 1 (HYPOXIA)</span>
+                  <span className="text-[#d96347] font-extrabold animate-pulse">CONDITION A = 1 (LOW O₂)</span>
                 ) : (
-                  <span className="text-cyan-400 font-bold">PROPOSITION A = 0 (OPTIMAL)</span>
+                  <span className="text-[#70b896] font-bold">CONDITION A = 0 (NORMAL)</span>
                 )}
               </span>
             </div>
@@ -512,8 +511,8 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
               type="pleth"
               bpm={vitals.heartRate}
               oxygen={vitals.oxygen}
-              color="#38bdf8"
-              glowColor="rgba(56, 189, 248, 0.4)"
+              color="#70b896"
+              glowColor="rgba(112, 184, 150, 0.4)"
               label="PLETH • PPG"
               sublabel="Optical Perfusion"
               height={85}
@@ -524,13 +523,13 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           </div>
 
           {/* Waveform 3: Arterial Blood Pressure Line */}
-          <div className="rounded-2xl bg-[#050811] border border-white/10 p-3.5 shadow-xl relative overflow-hidden">
-            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-white/5 mb-1">
+          <div className="rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-3.5 shadow-xl relative overflow-hidden">
+            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-[#faf6f0]/8 mb-1">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm" />
-                <span className="font-mono font-bold text-white text-[11px]">ARTERIAL PULSE (ABP)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#d96347] shadow-sm" />
+                <span className="font-mono font-bold text-[#faf6f0] text-[11px]">BLOOD PRESSURE PULSE (ABP)</span>
               </div>
-              <span className="font-mono text-[11px] text-slate-400">
+              <span className="font-mono text-[11px] text-[#c5beaf]">
                 PULSE PRESSURE: {vitals.bloodPressureSystolic - vitals.bloodPressureDiastolic} mmHg
               </span>
             </div>
@@ -540,10 +539,10 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
               oxygen={vitals.oxygen}
               bloodPressureSystolic={vitals.bloodPressureSystolic}
               bloodPressureDiastolic={vitals.bloodPressureDiastolic}
-              color="#f59e0b"
-              glowColor="rgba(245, 158, 11, 0.35)"
-              label="ABP • RADIAL"
-              sublabel="Dicrotic Notch Trace"
+              color="#d96347"
+              glowColor="rgba(217, 99, 71, 0.35)"
+              label="ABP • ARTERIAL"
+              sublabel="Pulse Contour"
               height={75}
               isFault={!sensors.nibp.leadAttached}
               signalQuality={sensors.nibp.signalQuality}
@@ -552,14 +551,14 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           </div>
 
           {/* Waveform 4: Respiration / Capnography */}
-          <div className="rounded-2xl bg-[#050811] border border-white/10 p-3.5 shadow-xl relative overflow-hidden">
-            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-white/5 mb-1">
+          <div className="rounded-2xl bg-[#14161c] border border-[#faf6f0]/10 p-3.5 shadow-xl relative overflow-hidden">
+            <div className="flex items-center justify-between px-2 pb-2 text-xs border-b border-[#faf6f0]/8 mb-1">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-teal-400 shadow-sm" />
-                <span className="font-mono font-bold text-white text-[11px]">CAPNOGRAPHY (RESP CO₂)</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-[#e5933a] shadow-sm" />
+                <span className="font-mono font-bold text-[#faf6f0] text-[11px]">BREATHING CYCLE • RESPIRATION</span>
               </div>
-              <span className="font-mono text-[11px] text-slate-400">
-                VENTILATION RATE: {vitals.respiratoryRate} RPM
+              <span className="font-mono text-[11px] text-[#c5beaf]">
+                BREATHING RATE: {vitals.respiratoryRate} RPM
               </span>
             </div>
             <WaveformCanvas
@@ -567,10 +566,10 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
               bpm={vitals.heartRate}
               oxygen={vitals.oxygen}
               respiratoryRate={vitals.respiratoryRate}
-              color="#2dd4bf"
-              glowColor="rgba(45, 212, 191, 0.35)"
-              label="RESP • CO₂"
-              sublabel="Alveolar Ventilation"
+              color="#e5933a"
+              glowColor="rgba(229, 147, 58, 0.35)"
+              label="RESP • CYCLE"
+              sublabel="Ventilation Pacing"
               height={75}
               isFault={!sensors.resp.leadAttached}
               signalQuality={sensors.resp.signalQuality}
@@ -628,17 +627,17 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           <div className={`p-5 rounded-3xl border transition-all ${spo2Status.bg} ${spo2Status.border} shadow-xl relative overflow-hidden`}>
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-2xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                <div className="p-2.5 rounded-2xl bg-[#70b896]/15 text-[#70b896] border border-[#70b896]/30">
                   <Wind className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400 font-bold">OXYGEN SATURATION</h4>
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-[#c5beaf] font-bold">OXYGEN SATURATION</h4>
                   <span className={`text-[11px] font-mono font-extrabold ${spo2Status.color}`}>
                     {spo2Status.label}
                   </span>
                 </div>
               </div>
-              <div className="text-right font-mono text-[10px] text-slate-500">
+              <div className="text-right font-mono text-[10px] text-[#c5beaf]">
                 <span>LIMIT</span>
                 <div>&ge; 90%</div>
               </div>
@@ -646,20 +645,20 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
 
             <div className="mt-4 flex items-baseline justify-between">
               <div className="flex items-baseline gap-2">
-                <span className="font-display text-5xl font-black text-cyan-400 tracking-tight">
+                <span className="font-display text-5xl font-black text-[#faf6f0] tracking-tight">
                   {sensors.spo2.leadAttached ? vitals.oxygen : '--'}
                 </span>
-                <span className="font-mono text-xs text-slate-400 font-bold">% SpO₂</span>
+                <span className="font-mono text-xs text-[#c5beaf] font-bold">% SpO₂</span>
               </div>
               <div className="text-right">
-                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/10 text-slate-300 font-bold">
-                  PROPOSITION A
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-[#161820] border border-[#faf6f0]/10 text-[#c5beaf] font-bold">
+                  CONDITION A
                 </span>
                 <div className="font-mono text-xs font-black mt-1">
                   {propositions.A ? (
-                    <span className="text-rose-400">A = 1 (ACTIVE)</span>
+                    <span className="text-[#d96347]">A = 1 (LOW)</span>
                   ) : (
-                    <span className="text-cyan-400">A = 0 (SAFE)</span>
+                    <span className="text-[#5da283]">A = 0 (SAFE)</span>
                   )}
                 </div>
               </div>
@@ -670,17 +669,17 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           <div className={`p-5 rounded-3xl border transition-all ${tempStatus.bg} ${tempStatus.border} shadow-xl relative overflow-hidden`}>
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <div className="p-2.5 rounded-2xl bg-[#5da283]/15 text-[#5da283] border border-[#5da283]/30">
                   <Thermometer className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-mono text-xs uppercase tracking-wider text-slate-400 font-bold">CORE TEMPERATURE</h4>
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-[#c5beaf] font-bold">BODY TEMPERATURE</h4>
                   <span className={`text-[11px] font-mono font-extrabold ${tempStatus.color}`}>
                     {tempStatus.label}
                   </span>
                 </div>
               </div>
-              <div className="text-right font-mono text-[10px] text-slate-500">
+              <div className="text-right font-mono text-[10px] text-[#c5beaf]">
                 <span>LIMIT</span>
                 <div>&le; 39.0°C</div>
               </div>
@@ -688,22 +687,22 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
 
             <div className="mt-4 flex items-baseline justify-between">
               <div className="flex items-baseline gap-2">
-                <span className="font-display text-4xl font-black text-white tracking-tight">
+                <span className="font-display text-4xl font-black text-[#faf6f0] tracking-tight">
                   {sensors.temp.leadAttached ? vitals.temperature.toFixed(1) : '--'}
                 </span>
-                <span className="font-mono text-xs text-slate-400 font-bold">
+                <span className="font-mono text-xs text-[#c5beaf] font-bold">
                   °C ({sensors.temp.leadAttached ? (vitals.temperature * 1.8 + 32).toFixed(1) : '--'}°F)
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-slate-900 border border-white/10 text-slate-300 font-bold">
-                  PROPOSITION C
+                <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-md bg-[#161820] border border-[#faf6f0]/10 text-[#c5beaf] font-bold">
+                  CONDITION C
                 </span>
                 <div className="font-mono text-xs font-black mt-1">
                   {propositions.C ? (
-                    <span className="text-rose-400">C = 1 (ACTIVE)</span>
+                    <span className="text-[#d96347]">C = 1 (HIGH)</span>
                   ) : (
-                    <span className="text-emerald-400">C = 0 (SAFE)</span>
+                    <span className="text-[#5da283]">C = 0 (SAFE)</span>
                   )}
                 </div>
               </div>
@@ -714,33 +713,33 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
           <div className="grid grid-cols-2 gap-4">
             <div className={`p-4 rounded-2xl border transition-all ${bpStatus.bg} ${bpStatus.border}`}>
               <div className="flex items-center gap-1.5 mb-1">
-                <Gauge className="w-4 h-4 text-amber-400" />
-                <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold">NIBP / ART</span>
+                <Gauge className="w-4 h-4 text-[#e5933a]" />
+                <span className="font-mono text-[11px] uppercase tracking-wider text-[#c5beaf] font-bold">BLOOD PRESSURE</span>
               </div>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="font-display text-2xl font-black text-white">
+                <span className="font-display text-2xl font-black text-[#faf6f0]">
                   {sensors.nibp.leadAttached ? `${vitals.bloodPressureSystolic}/${vitals.bloodPressureDiastolic}` : '--/--'}
                 </span>
-                <span className="font-mono text-[10px] text-slate-500 font-bold">mmHg</span>
+                <span className="font-mono text-[10px] text-[#c5beaf] font-bold">mmHg</span>
               </div>
-              <div className="mt-1 text-[10px] font-mono text-slate-400">
-                MAP: {sensors.nibp.leadAttached ? `${meanArterialPressure} mmHg` : '--'}
+              <div className="mt-1 text-[10px] font-mono text-[#c5beaf]">
+                Mean: {sensors.nibp.leadAttached ? `${meanArterialPressure} mmHg` : '--'}
               </div>
             </div>
 
             <div className={`p-4 rounded-2xl border transition-all ${respStatus.bg} ${respStatus.border}`}>
               <div className="flex items-center gap-1.5 mb-1">
-                <Activity className="w-4 h-4 text-teal-400" />
-                <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400 font-bold">RESP RATE</span>
+                <Activity className="w-4 h-4 text-[#5da283]" />
+                <span className="font-mono text-[11px] uppercase tracking-wider text-[#c5beaf] font-bold">BREATHING</span>
               </div>
               <div className="flex items-baseline gap-1 mt-1">
-                <span className="font-display text-2xl font-black text-white">
+                <span className="font-display text-2xl font-black text-[#faf6f0]">
                   {sensors.resp.leadAttached ? vitals.respiratoryRate : '--'}
                 </span>
-                <span className="font-mono text-[10px] text-slate-500 font-bold">RPM</span>
+                <span className="font-mono text-[10px] text-[#c5beaf] font-bold">RPM</span>
               </div>
-              <div className="mt-1 text-[10px] font-mono text-slate-400">
-                Normal Limits: 12-20
+              <div className="mt-1 text-[10px] font-mono text-[#c5beaf]">
+                Normal: 12-20
               </div>
             </div>
           </div>
@@ -748,24 +747,24 @@ export const PatientMonitor: React.FC<PatientMonitorProps> = ({
       </div>
 
       {/* DISCRETE LOGIC FORMULA EVALUATION STRIP */}
-      <div className="p-5 rounded-3xl bg-gradient-to-r from-[#090e1a] to-[#0d1424] border border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono shadow-xl">
+      <div className="p-5 rounded-3xl bg-[#171920] border border-[#faf6f0]/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono shadow-xl">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-500/30">
+          <div className="p-2.5 rounded-xl bg-[#e5933a]/15 text-[#e5933a] border border-[#e5933a]/30">
             <Cpu className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-slate-400 uppercase text-[10px] font-bold">REAL-TIME CONJUNCTION SYNTHESIS:</span>
-            <div className="text-white font-black text-sm tracking-wider mt-0.5">
-              E = A ∧ B = ({propositions.A ? '1' : '0'} ∧ {propositions.B ? '1' : '0'}) = <span className={propositions.E_Combined ? 'text-rose-400 underline font-black' : 'text-emerald-400'}>{propositions.E_Combined ? '1 (TRIPPED)' : '0 (QUIESCENT)'}</span>
+            <span className="text-[#c5beaf] uppercase text-[10px] font-bold">LIVE BOOLEAN CONJUNCTION STATUS:</span>
+            <div className="text-[#faf6f0] font-black text-sm tracking-wider mt-0.5">
+              E = A ∧ B = ({propositions.A ? '1' : '0'} ∧ {propositions.B ? '1' : '0'}) = <span className={propositions.E_Combined ? 'text-[#d96347] underline font-black' : 'text-[#5da283]'}>{propositions.E_Combined ? '1 (EMERGENCY ACTIVATED)' : '0 (NORMAL)'}</span>
             </div>
           </div>
         </div>
 
         <button
           onClick={onRevealMath}
-          className="text-blue-400 hover:text-blue-300 font-bold flex items-center gap-1.5 transition-colors cursor-pointer group"
+          className="text-[#d96347] hover:text-[#e5933a] font-bold flex items-center gap-1.5 transition-colors cursor-pointer group"
         >
-          <span>Trace this deduction in Solve the Math</span>
+          <span>Examine truth table in Solve the Math</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
         </button>
       </div>

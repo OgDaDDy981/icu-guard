@@ -6,17 +6,29 @@
     --font-mono: 'JetBrains Mono', monospace;
     --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
     
-    /* Medical Theme Surfaces */
-    --surface-obsidian: #050811;
-    --surface-elevated: #090e1a;
-    --surface-card: rgba(13, 20, 36, 0.7);
-    --surface-border: rgba(255, 255, 255, 0.08);
+    /* Warm Charcoal & Graphite Palette */
+    --surface-charcoal: #111215;
+    --surface-graphite: #17191e;
+    --surface-elevated: #1e2027;
+    --surface-card: rgba(30, 32, 39, 0.78);
+    --surface-border: rgba(250, 246, 240, 0.08);
+
+    /* Text & Accents */
+    --text-ivory: #faf6f0;
+    --text-ivory-muted: #c5beaf;
+    --accent-terracotta: #d96347;
+    --accent-terracotta-glow: rgba(217, 99, 71, 0.35);
+    --accent-sage: #5da283;
+    --accent-sage-glow: rgba(93, 162, 131, 0.3);
+    --accent-amber: #e5933a;
+    --accent-amber-glow: rgba(229, 147, 58, 0.3);
+    --accent-plum: #9b7299;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #050811;
-    color: #e2e8f0;
+    background-color: #111215;
+    color: #faf6f0;
     overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -32,17 +44,17 @@
   font-family: var(--font-mono);
 }
 
-/* Precision Glass & Surface Treatments */
-.clinical-card {
-  background: linear-gradient(135deg, rgba(13, 20, 36, 0.75) 0%, rgba(8, 13, 25, 0.85) 100%);
+/* Warm Charcoal Glass & Precision Surfaces */
+.clinical-card, .warm-card {
+  background: linear-gradient(145deg, rgba(30, 32, 39, 0.85) 0%, rgba(20, 21, 26, 0.92) 100%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(250, 246, 240, 0.08);
+  box-shadow: 0 12px 36px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 0 rgba(250, 246, 240, 0.07);
 }
 
-.clinical-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+.clinical-card:hover, .warm-card:hover {
+  border-color: rgba(250, 246, 240, 0.15);
 }
 
 .clinical-card-glow {
@@ -53,7 +65,7 @@
   content: '';
   position: absolute;
   inset: -1px;
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(16, 185, 129, 0.2), rgba(99, 102, 241, 0.3));
+  background: linear-gradient(90deg, rgba(217, 99, 71, 0.25), rgba(93, 162, 131, 0.25), rgba(229, 147, 58, 0.25));
   border-radius: inherit;
   z-index: -1;
   opacity: 0;
@@ -66,16 +78,16 @@
 
 /* Specular Hairline Borders */
 .border-specular {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top-color: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(250, 246, 240, 0.08);
+  border-top-color: rgba(250, 246, 240, 0.16);
 }
 
-/* Oscilloscope Grid Background */
-.oscilloscope-grid {
-  background-size: 24px 24px;
+/* Warm Oscilloscope Grid Background */
+.oscilloscope-grid, .warm-grid {
+  background-size: 26px 26px;
   background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+    linear-gradient(to right, rgba(250, 246, 240, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(250, 246, 240, 0.03) 1px, transparent 1px);
 }
 
 /* Keyframes for Motion Design */
@@ -83,12 +95,12 @@
   0%, 100% {
     opacity: 1;
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    box-shadow: 0 0 0 0 rgba(217, 99, 71, 0.7);
   }
   50% {
-    opacity: 0.85;
+    opacity: 0.88;
     transform: scale(1.02);
-    box-shadow: 0 0 24px 6px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 24px 6px rgba(217, 99, 71, 0.45);
   }
 }
 
@@ -98,7 +110,7 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.35;
   }
   50% {
     opacity: 0.8;
@@ -129,15 +141,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #050811;
+  background: #111215;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #282a32;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(250, 246, 240, 0.08);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #393c47;
 }
