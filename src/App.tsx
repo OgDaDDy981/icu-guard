@@ -213,13 +213,13 @@ export function App() {
   const activeAlarmsCount = alarms.filter((a) => !a.resolved).length;
 
   return (
-    <div className="relative min-h-screen bg-[#070b14] text-slate-100 flex flex-col selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="relative min-h-screen bg-[#050811] text-slate-100 flex flex-col selection:bg-blue-500/30 selection:text-blue-200">
       {/* Top Emergency Strobe Banner when Critical Emergency is active */}
       {systemStatus === 'CRITICAL_EMERGENCY' && (
         <aside
           role="alert"
           aria-live="assertive"
-          className="sticky top-0 z-50 w-full py-2.5 px-4 bg-gradient-to-r from-rose-950 via-rose-700 to-rose-950 text-white font-mono text-xs font-bold flex items-center justify-between gap-4 border-b border-rose-500 shadow-xl animate-pulse"
+          className="sticky top-0 z-50 w-full py-2.5 px-4 bg-gradient-to-r from-rose-950 via-rose-700 to-rose-950 text-white font-mono text-xs font-bold flex items-center justify-between gap-4 border-b border-rose-500/80 shadow-2xl animate-pulse"
         >
           <div className="flex items-center gap-2 max-w-4xl mx-auto">
             <AlertOctagon className="w-4 h-4 animate-bounce shrink-0 text-white" />

@@ -261,8 +261,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
           onClick={() => handleSelectExperience('normal')}
           className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
             activeExperience === 'normal'
-              ? 'bg-gradient-to-b from-[#081812] to-[#070e12] border-emerald-500 shadow-2xl shadow-emerald-950/50 ring-1 ring-emerald-500/50'
-              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+              ? 'bg-gradient-to-b from-[#05170f] via-[#04100c] to-[#030806] border-emerald-500/80 shadow-2xl shadow-emerald-950/60 ring-1 ring-emerald-500/40'
+              : 'bg-[#050811]/90 border-white/[0.08] hover:border-emerald-500/30 hover:bg-[#071018]'
           }`}
         >
           {activeExperience === 'normal' && (
@@ -274,14 +274,14 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               <div className={`p-3 rounded-2xl border ${
                 activeExperience === 'normal'
                   ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
-                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                  : 'bg-slate-900 border-white/10 text-slate-400'
               }`}>
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
                 activeExperience === 'normal'
                   ? 'bg-emerald-500 text-slate-950 font-black'
-                  : 'bg-slate-800 text-slate-400'
+                  : 'bg-slate-900 text-slate-400 border border-white/8'
               }`}>
                 SAFE HOMEOSTASIS
               </span>
@@ -295,13 +295,13 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               The logic engine evaluates zero alarms.
             </p>
 
-            <div className="mt-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 font-mono text-xs flex items-center justify-between">
+            <div className="mt-4 p-3 rounded-xl bg-black/60 border border-white/10 font-mono text-xs flex items-center justify-between">
               <span className="text-slate-400">Baseline Readings:</span>
               <span className="text-emerald-400 font-bold">SpO₂ 98% • HR 74 BPM</span>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-emerald-400 flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4" /> Normal Telemetry
             </span>
@@ -320,8 +320,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
           onClick={() => handleSelectExperience('warning')}
           className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
             activeExperience === 'warning'
-              ? 'bg-gradient-to-b from-[#1c1307] to-[#0d0d12] border-amber-500 shadow-2xl shadow-amber-950/50 ring-1 ring-amber-500/50'
-              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+              ? 'bg-gradient-to-b from-[#191104] via-[#100a02] to-[#060402] border-amber-500/80 shadow-2xl shadow-amber-950/60 ring-1 ring-amber-500/40'
+              : 'bg-[#050811]/90 border-white/[0.08] hover:border-amber-500/30 hover:bg-[#0e0a05]/50'
           }`}
         >
           {activeExperience === 'warning' && (
@@ -333,14 +333,14 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               <div className={`p-3 rounded-2xl border ${
                 activeExperience === 'warning'
                   ? 'bg-amber-500/20 border-amber-500/40 text-amber-400'
-                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                  : 'bg-slate-900 border-white/10 text-slate-400'
               }`}>
                 <AlertTriangle className="w-6 h-6" />
               </div>
               <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
                 activeExperience === 'warning'
                   ? 'bg-amber-500 text-slate-950 font-black'
-                  : 'bg-slate-800 text-slate-400'
+                  : 'bg-slate-900 text-slate-400 border border-white/8'
               }`}>
                 ISOLATED WARNING
               </span>
@@ -355,7 +355,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             </p>
 
             {/* Sub-variant toggle: Hypoxia vs Tachycardia */}
-            <div className="mt-4 grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950/80 border border-slate-800 font-mono text-[11px]">
+            <div className="mt-4 grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black/60 border border-white/10 font-mono text-[11px]">
               <button
                 type="button"
                 onClick={(e) => {
@@ -364,7 +364,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                   setWarningVariant('hypoxia');
                   handleSelectExperience('warning');
                 }}
-                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center ${
+                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center cursor-pointer ${
                   warningVariant === 'hypoxia'
                     ? 'bg-amber-500 text-slate-950 shadow-sm'
                     : 'text-slate-400 hover:text-white'
@@ -380,7 +380,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
                   setWarningVariant('tachycardia');
                   handleSelectExperience('warning');
                 }}
-                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center ${
+                className={`py-1.5 px-2 rounded-lg font-bold transition-all text-center cursor-pointer ${
                   warningVariant === 'tachycardia'
                     ? 'bg-amber-500 text-slate-950 shadow-sm'
                     : 'text-slate-400 hover:text-white'
@@ -391,7 +391,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4" /> Single Breach
             </span>
@@ -410,8 +410,8 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
           onClick={() => handleSelectExperience('emergency')}
           className={`p-6 rounded-3xl cursor-pointer transition-all relative overflow-hidden flex flex-col justify-between border ${
             activeExperience === 'emergency'
-              ? 'bg-gradient-to-b from-[#200709] to-[#0e0709] border-rose-500 shadow-2xl shadow-rose-950/60 ring-1 ring-rose-500/60'
-              : 'bg-[#090d16] border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/50'
+              ? 'bg-gradient-to-b from-[#1e070a] via-[#130406] to-[#080203] border-rose-500/80 shadow-2xl shadow-rose-950/70 ring-1 ring-rose-500/50'
+              : 'bg-[#050811]/90 border-white/[0.08] hover:border-rose-500/30 hover:bg-[#15070a]/50'
           }`}
         >
           {activeExperience === 'emergency' && (
@@ -423,14 +423,14 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               <div className={`p-3 rounded-2xl border ${
                 activeExperience === 'emergency'
                   ? 'bg-rose-500/20 border-rose-500/40 text-rose-400'
-                  : 'bg-slate-800 border-slate-700 text-slate-400'
+                  : 'bg-slate-900 border-white/10 text-slate-400'
               }`}>
                 <AlertOctagon className="w-6 h-6 animate-pulse" />
               </div>
               <span className={`text-[11px] font-mono font-bold px-2.5 py-1 rounded-full uppercase ${
                 activeExperience === 'emergency'
                   ? 'bg-rose-500 text-white font-black animate-pulse'
-                  : 'bg-slate-800 text-slate-400'
+                  : 'bg-slate-900 text-slate-400 border border-white/8'
               }`}>
                 CODE RED EMERGENCY
               </span>
@@ -444,13 +444,13 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
               Conjunction ($A \land B$) is satisfied, instantly actuating Code Red.
             </p>
 
-            <div className="mt-4 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 font-mono text-xs flex items-center justify-between">
+            <div className="mt-4 p-3 rounded-xl bg-black/60 border border-white/10 font-mono text-xs flex items-center justify-between">
               <span className="text-slate-400">Critical Conjunction:</span>
               <span className="text-rose-400 font-bold">SpO₂ 84% &lt; 90% ∧ HR 148 BPM</span>
             </div>
           </div>
 
-          <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
             <span className="text-xs font-mono font-bold text-rose-400 flex items-center gap-1.5">
               <AlertOctagon className="w-4 h-4" /> Code Red Interlock
             </span>
@@ -591,7 +591,7 @@ export const ScenarioPlayer: React.FC<ScenarioPlayerProps> = ({
             {/* Background Image of Modern ICU Room */}
             <div
               className="absolute inset-0 opacity-15 bg-cover bg-center mix-blend-luminosity pointer-events-none"
-              style={{ backgroundImage: `url('/icu-room.jpg')` }}
+              style={{ backgroundImage: `url('${import.meta.env.BASE_URL}icu-room.jpg')` }}
             />
 
             <div className="relative z-10">
